@@ -8,21 +8,19 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 
 @Entity
 public class Book {
-	public enum Category {
-	    ADVENTURE,
-	    COMIC,
-	    ROMANTIC
-	}
 
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Enumerated(EnumType.STRING)
-	private Category category;
+	@ManyToOne
+	private Author author;
+	@Column (nullable = false)
+	private String category;
 	@Column
 	private String image;
 	@Column
@@ -41,10 +39,11 @@ public class Book {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Category getCategory() {
+
+	public String getCategory() {
 		return category;
 	}
-	public void setCategory(Category category) {
+	public void setCategory(String category) {
 		this.category = category;
 	}
 	public String getImage() {
@@ -82,6 +81,12 @@ public class Book {
 	}
 	public void setContent(String content) {
 		this.content = content;
+	}
+	public Author getAuthor() {
+		return author;
+	}
+	public void setAuthor(Author author) {
+		this.author = author;
 	}
 	
 	
