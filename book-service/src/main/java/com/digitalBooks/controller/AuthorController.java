@@ -20,6 +20,5 @@ public class AuthorController extends BaseController {
 	public Integer saveBook(@Validated @RequestBody Book book) {
 		 authorService.saveBook(book);
 		 return book.getId();
-		
 	}
 }
