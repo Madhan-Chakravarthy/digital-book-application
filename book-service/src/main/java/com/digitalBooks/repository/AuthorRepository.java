@@ -8,4 +8,5 @@ import com.digitalBooks.entity.Author;
 
 public interface AuthorRepository extends JpaRepository<Author, Integer>{
 
+	List<Author> findByAuthorName (String authorName);
 }

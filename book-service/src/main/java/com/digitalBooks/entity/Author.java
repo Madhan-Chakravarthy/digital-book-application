@@ -1,12 +1,11 @@
 package com.digitalBooks.entity;
 
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+
 
 @Entity
 public class Author {
@@ -16,10 +15,18 @@ public class Author {
 	private Integer id;
 	@Column (nullable = false)
 	private String authorName;
-	@Column (nullable = false)
+	@Column (unique = true, nullable = false)
 	private String authorMailId;
-	@OneToMany (targetEntity = Book.class)
-	private Set<Book> books;
+	
+	public Author(Integer id, String authorName, String authorMailId) {
+		super();
+		this.id = id;
+		this.authorName = authorName;
+		this.authorMailId = authorMailId;
+	}
+	public Author() {
+		super();
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -37,12 +44,6 @@ public class Author {
 	}
 	public void setAuthorMailId(String authorMailId) {
 		this.authorMailId = authorMailId;
-	}
-	public Set<Book> getBooks() {
-		return books;
-	}
-	public void setBooks(Set<Book> books) {
-		this.books = books;
 	}
 	
 }

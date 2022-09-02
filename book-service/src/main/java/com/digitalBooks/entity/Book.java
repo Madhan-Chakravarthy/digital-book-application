@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -33,6 +31,23 @@ public class Book {
 	private Boolean active;
 	@Column(nullable = false)
 	private String content;
+	
+	public Book(Integer id, Author author, String category, String image, Double price, LocalDate publishDate,
+			String publisher, Boolean active, String content) {
+		super();
+		this.id = id;
+		this.author = author;
+		this.category = category;
+		this.image = image;
+		this.price = price;
+		this.publishDate = publishDate;
+		this.publisher = publisher;
+		this.active = active;
+		this.content = content;
+	}
+	public Book() {
+		super();
+	}
 	public Integer getId() {
 		return id;
 	}
