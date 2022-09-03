@@ -1,10 +1,12 @@
-package com.digitalBooks.repository;
+package com.digitalbooks.repository;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.digitalBooks.entity.Book;
+import com.digitalbooks.entity.Book;
+
+
 
 public interface Bookrepository extends JpaRepository<Book, Integer> {
 

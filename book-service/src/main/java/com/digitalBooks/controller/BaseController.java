@@ -1,4 +1,4 @@
-package com.digitalBooks.controller;
+package com.digitalbooks.controller;
 
 import java.util.HashMap;
 import java.util.Map;

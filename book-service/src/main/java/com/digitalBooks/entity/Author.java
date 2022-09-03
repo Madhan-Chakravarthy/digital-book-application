@@ -1,4 +1,4 @@
-package com.digitalBooks.entity;
+package com.digitalbooks.entity;
 
 
 import javax.persistence.Column;

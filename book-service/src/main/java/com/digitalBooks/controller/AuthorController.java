@@ -1,4 +1,4 @@
-package com.digitalBooks.controller;
+package com.digitalbooks.controller;
 
 import java.util.List;
 
@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digitalBooks.entity.Author;
-import com.digitalBooks.entity.Book;
-import com.digitalBooks.service.AuthorService;
+import com.digitalbooks.entity.Author;
+import com.digitalbooks.entity.Book;
+import com.digitalbooks.service.AuthorService;
+
+
 
 @RestController
 @RequestMapping("/author")
@@ -22,14 +24,9 @@ public class AuthorController extends BaseController {
 	@Autowired
 	AuthorService authorService;
 	@PostMapping("/{authorId}/book")
-	public Integer saveBook(@PathVariable Integer authorId ,@Validated @RequestBody Book book) {
+	public Book saveBook(@PathVariable Integer authorId ,@Validated @RequestBody Book book) {
 		 authorService.saveBook(book,authorId);
-		 return book.getId();
-	}
-	
-	@GetMapping ("/{autherName}")
-	public List<Author> getBookById(@PathVariable String autherName) {
-		return authorService.getAuthorByName(autherName);
+		 return authorService.saveBook(book,authorId);
 	}
 	
 	@GetMapping ("/{id}/book")

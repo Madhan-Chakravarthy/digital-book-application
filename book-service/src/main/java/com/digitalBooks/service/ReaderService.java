@@ -1,4 +1,4 @@
-package com.digitalBooks.service;
+package com.digitalbooks.service;
 
 import java.util.Collections;
 import java.util.List;
@@ -8,10 +8,12 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.digitalBooks.entity.Book;
-import com.digitalBooks.entity.Reader;
-import com.digitalBooks.repository.Bookrepository;
-import com.digitalBooks.repository.ReaderRepository;
+import com.digitalbooks.entity.Book;
+import com.digitalbooks.entity.Reader;
+import com.digitalbooks.repository.Bookrepository;
+import com.digitalbooks.repository.ReaderRepository;
+
+
 
 @Service
 public class ReaderService {
@@ -21,9 +23,9 @@ public class ReaderService {
 	@Autowired
 	ReaderRepository readerRepository;
 	
-	public List<Book> getBooks(String category,String author, Double price,String publisher) {
+	public List<Book> searchBooks(String category, Double price,String publisher,String authorName) {
 		List<Book> books = bookrepository
-				.findByCategoryIgnoreCaseOrPriceOrPublisherIgnoreCaseOrAuthorAuthorNameIgnoreCase(category, price, publisher, author);
+				.findByCategoryIgnoreCaseOrPriceOrPublisherIgnoreCaseOrAuthorAuthorNameIgnoreCase(category, price, publisher, authorName);
 		return books;
 	}
 
@@ -33,7 +35,7 @@ public class ReaderService {
 	}
 
 
-	public Set<Book> getpurchasedBooks(Integer readerId) {
+	public Set<Book> getPurchasedBooks(Integer readerId) {
 		Optional<Reader> reader =readerRepository.findById(readerId);
 		if(reader.isPresent()) {
 			return reader.get().getPurchasedBooks();
