@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,13 @@ public class ReaderService {
 	}
 
 
-	public Optional<Book> getBookById(Integer readerId,Integer bookId) {
-		return bookrepository.findById(bookId);
+	public List<Book> getBookById(Integer readerId,Integer bookId) {
+		Set<Book>books= readerRepository.findById(readerId).get()
+						.getPurchasedBooks();
+		System.out.println(books);
+		 return 	books.stream()
+				 .filter(book->book.getId()==bookId)
+				 .collect(Collectors.toList());	 
 	}
 
 

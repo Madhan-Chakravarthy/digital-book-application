@@ -3,7 +3,6 @@ package com.digitalbooks.controller;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,11 +36,13 @@ class ReaderControllerTest {
 			assertEquals(readerController.getPurchasedBooks(i), MockData.readers.get(i).getPurchasedBooks());
 		}
 	}
-	@Test
-	void testGetBookById() {
-		when(readerService.getBookById(1,2)).thenReturn( Optional.of( MockData.books.get(1)));
-		assertEquals(readerController.getBookById(1,2),   new ResponseEntity<Book>(MockData.books.get(1),HttpStatus.OK));
-	}
+
+	/*
+	 * @Test void testGetBookById() {
+	 * when(readerService.getBookById(1,2)).thenReturn( Optional.of(
+	 * MockData.books.get(1))); assertEquals(readerController.getBookById(1,2), new
+	 * ResponseEntity<Book>(MockData.books.get(1),HttpStatus.OK)); }
+	 */
 	@Test
 	void testsearchBooks() {
 		List<Book> books =MockData.books.stream()

@@ -1,7 +1,6 @@
 package com.digitalbooks.controller;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.digitalbooks.entity.Book;
 import com.digitalbooks.service.ReaderService;
 
+import lombok.extern.slf4j.Slf4j;
 
 
+@Slf4j
 @RestController
 @RequestMapping ("/reader")
 public class ReaderController extends BaseController{
@@ -36,11 +37,12 @@ public class ReaderController extends BaseController{
 	}
 	@GetMapping ("/{readerId}/books/{bookId}")
 	public ResponseEntity<Book> getBookById(@PathVariable Integer readerId,@PathVariable Integer bookId) {
-		  Optional<Book> book=	readerService.getBookById(readerId,bookId);
-		  if(book.isPresent())
-			return  new ResponseEntity<Book>(book.get(),HttpStatus.OK);	 
-			 
-		  return new ResponseEntity<> (HttpStatus.NOT_FOUND); 
+		  List<Book> books=	readerService.getBookById(readerId,bookId);
+		 System.out.println(books);
+		  if(!books.isEmpty() && books.get(0)!=null)
+			return  new ResponseEntity<Book>(books.get(0),HttpStatus.OK);	 
+		  else
+			  return new ResponseEntity<> (HttpStatus.NOT_FOUND); 
 	}
 	@PatchMapping ("/{readerId}/books/buy/{bookId}")
 	  public ResponseEntity<Set<Book>> purchaseBook(@PathVariable Integer readerId,@PathVariable Integer bookId){
