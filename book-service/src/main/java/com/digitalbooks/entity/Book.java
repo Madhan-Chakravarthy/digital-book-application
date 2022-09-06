@@ -4,106 +4,53 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
 
+import com.digitalbooks.common.BookCategory;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import lombok.Data;
+
+/**
+ * 
+ * @author madhan Book class is annotated with entity.It is responsible to
+ *         create the Book data in Database
+ *
+ */
+@Data
 @Entity
 public class Book {
-
 	@Id
 	@GeneratedValue
 	private Integer id;
 	@ManyToOne
 	private Author author;
-	@Column (nullable = false)
-	private String category;
+	@Column
+	@NotNull(message = "Enter the book name")
+	private String tittle;
+	@Enumerated(EnumType.STRING)
+	private BookCategory category;
 	@Column
 	private String image;
 	@Column
+	@Min(value = 0, message = "price should not be negative value")
 	private Double price;
 	@Column
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate publishDate;
 	@Column
 	private String publisher;
-	@Column (nullable =false)
+	@Column(nullable = false)
 	private Boolean active;
 	@Column(nullable = false)
 	private String content;
-	
-	public Book(Integer id, Author author, String category, String image, Double price, LocalDate publishDate,
-			String publisher, Boolean active, String content) {
-		super();
-		this.id = id;
-		this.author = author;
-		this.category = category;
-		this.image = image;
-		this.price = price;
-		this.publishDate = publishDate;
-		this.publisher = publisher;
-		this.active = active;
-		this.content = content;
-	}
-	public Book() {
-		super();
-	}
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
-	public String getImage() {
-		return image;
-	}
-	public void setImage(String image) {
-		this.image = image;
-	}
-	public Double getPrice() {
-		return price;
-	}
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-	public LocalDate getPublishDate() {
-		return publishDate;
-	}
-	public void setPublishDate(LocalDate publishDate) {
-		this.publishDate = publishDate;
-	}
-	public String getPublisher() {
-		return publisher;
-	}
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
-	public Boolean getActive() {
-		return active;
-	}
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
-	public Author getAuthor() {
-		return author;
-	}
-	public void setAuthor(Author author) {
-		this.author = author;
-	}
-	
-	
-
 }

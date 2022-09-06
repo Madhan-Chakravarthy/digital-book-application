@@ -3,7 +3,16 @@ package com.digitalbooks;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-@EnableEurekaClient
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+/**
+ * Main class for springBoot application
+ * 
+ * @author madhan
+ *
+ */
+//@EnableEurekaClient
 @SpringBootApplication
 public class BookServiceApplication {
 
@@ -11,4 +20,8 @@ public class BookServiceApplication {
 		SpringApplication.run(BookServiceApplication.class, args);
 	}
 
+	@Bean
+	RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
 }

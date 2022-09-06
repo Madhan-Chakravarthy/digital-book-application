@@ -9,16 +9,28 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * 
+ * @author madhan BaseController class will handle exception and all the
+ *         controller class extends the BaseController
+ *
+ */
 public class BaseController {
 
 	public BaseController() {
 		super();
 	}
 
+	/**
+	 * exception handler to handle the validations
+	 * 
+	 * @param exception
+	 * @return
+	 */
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	Map<String, String> handleException(MethodArgumentNotValidException ex) {
+	Map<String, String> handleException(MethodArgumentNotValidException exception) {
 		Map<String, String> errors = new HashMap<>();
-		ex.getBindingResult().getAllErrors().forEach((error) -> {
+		exception.getBindingResult().getAllErrors().forEach((error) -> {
 			String fieldname = ((FieldError) error).getField();
 			String message = ((FieldError) error).getDefaultMessage();
 			errors.put(fieldname, message);
@@ -26,9 +38,14 @@ public class BaseController {
 		return errors;
 	}
 
+	/**
+	 * ExceptionHandler to handle all exception
+	 * 
+	 * @param exception
+	 */
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(Exception.class)
-	void handleOrderNotFound(Exception ex) {
+	void handleOrderNotFound(Exception exception) {
 
 	}
 }
