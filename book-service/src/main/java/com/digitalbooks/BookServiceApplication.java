@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
  * @author madhan
  *
  */
-//@EnableEurekaClient
+@EnableEurekaClient
 @SpringBootApplication
 public class BookServiceApplication {
 

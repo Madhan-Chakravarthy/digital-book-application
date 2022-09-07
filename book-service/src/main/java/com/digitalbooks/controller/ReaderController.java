@@ -40,7 +40,7 @@ public class ReaderController extends BaseController {
 	 * @param price
 	 * @param publisher
 	 * @param authorName
-	 * @return list of book
+	 * @return list of books
 	 */
 	@GetMapping("/books/search")
 	public List<Book> searchBooks(@RequestParam String tittle, @RequestParam BookCategory category,
@@ -71,10 +71,11 @@ public class ReaderController extends BaseController {
 	public ResponseEntity<Book> getBookById(@PathVariable Integer readerId, @PathVariable Integer bookId) {
 		log.debug("Entering into getBookById");
 		Book book = readerService.getBookById(readerId, bookId);
+		log.debug(book.toString());
 		if (book != null)
 			return new ResponseEntity<Book>(book, HttpStatus.OK);
-		else
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
 	/**
