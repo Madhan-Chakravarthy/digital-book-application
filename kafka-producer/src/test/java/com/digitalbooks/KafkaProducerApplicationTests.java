@@ -1,10 +1,10 @@
-package com.digitalbooksEmail;
+package com.digitalbooks;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class EmailServiceApplicationTests {
+class KafkaProducerApplicationTests {
 
 	@Test
 	void contextLoads() {
