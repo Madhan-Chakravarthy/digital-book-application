@@ -1,0 +1,25 @@
+<div class="container mt-5 mb-5">
+  <div class="row d-flex justify-content-center">
+      <div class="col-md-10">
+          <div class="card">
+              <div class="row">
+                  <div class="col-md-6">
+                      <div class="images p-3">
+                        <img src="https://cdn.pixabay.com/photo/2015/11/19/21/10/glasses-1052010__340.jpg" alt="assets/images/sample.jpg" class="img-fluid" >
+                      </div>
+                  </div>
+                  <div class="col-md-6">
+                      <div class="product p-4">
+                        <h5 class="text-uppercase mt-1">{{book.tittle}}</h5>
+                          <div class="mt-1 mb-3"> <span class="text-uppercase text-muted brand">by madhan</span>
+                          </div>
+                          <p class="about">{{book.content}}</p>
+                          <p class="about">{{ book.price | currency:"INR":"symbol" }}</p>
+                          <div class="cart mt-4 align-items-center"> <button class="btn btn-danger mr-2 px-4">BUY NOW</button> </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

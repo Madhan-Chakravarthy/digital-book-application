@@ -1,23 +1,31 @@
-<h1>Book</h1>
-<form #bookForm="ngForm" (ngSubmit)="saveBook(bookForm.value)">
-  <br> <br>
-  <input type="text" ngModel name="tittle" placeholder="Book tittle">
-  <br> <br>
-  <input type="number" ngModel name="price" placeholder="price">
-  <br> <br>
-  <input type="text" ngModel name="publisher" placeholder="Publisher">
-  <br> <br>
-  <input type="date" ngModel name="publishDate"  data-date-format="DD/MM/YYYY">
-  <br> <br>
-  <input type="text"  ngModel name="content" placeholder="content">
-  <br> <br>
-  Active : <input type="radio" ngModel name="active"  [value]=true> <input type="radio" ngModel name="active"  [value]=false>
-  <br> <br>
-  <select name="category"  ngModel>
-    <option selected="COMIC" value="COMIC">COMIC</option>
-    <option value="ADVENTURE">ADVENTURE</option>
-    <option value="ROMANTIC">ROMANTIC</option>
+<h1>BOOK</h1>
+<br />
+<div class="container-fluid">
+  <form #bookForm="ngForm" (ngSubmit)="saveBook(bookForm.value)">
+    <input type="text" ngModel name="tittle" placeholder="Book tittle" />
+    <br />
+    <br />
+    <input type="number" ngModel name="price" placeholder="price" />
+    <br />
+    <br />
+    <input type="text" ngModel name="publisher" placeholder="Publisher" />
+    <br />
+    <br />
+    <input type="test" ngModel name="publishDate" data-date-format="DD/MM/YYYY" />
+    <br />
+    <br />
+    <input type="text" ngModel name="content" placeholder="content" />
+    <br />
+    <br />
+    Active : <input type="radio" ngModel name="active" [value]="true" />
+    <input type="radio" ngModel name="active" [value]="false" /> <br />
+    <br />
+    <select name="category" ngModel>
+      <option selected="COMIC" value="COMIC">COMIC</option>
+      <option value="ADVENTURE">ADVENTURE</option>
+      <option value="ROMANTIC">ROMANTIC</option>
     </select>
-  <br><br>
-  <button>save book</button>
-</form>
+    <br /><br />
+    <button class="btn btn-primary">save book</button>
+  </form>
+</div>

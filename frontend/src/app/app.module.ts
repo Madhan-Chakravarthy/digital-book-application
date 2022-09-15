@@ -10,6 +10,9 @@ import { BookFormComponent } from './components/book-form/book-form.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
 import { SignupFormComponent } from './components/signup-form/signup-form.component';
 import { SearchBookFormComponent } from './components/search-book-form/search-book-form.component';
+import { BookDetailsComponent } from './components/book-details/book-details.component';
+import { BookListComponent } from './components/book-list/book-list.component';
+
 
 
 @NgModule({
@@ -19,7 +22,9 @@ import { SearchBookFormComponent } from './components/search-book-form/search-bo
     BookFormComponent,
     LoginFormComponent,
     SignupFormComponent,
-    SearchBookFormComponent
+    SearchBookFormComponent,
+    BookDetailsComponent,
+    BookListComponent
   ],
   imports: [
     BrowserModule,

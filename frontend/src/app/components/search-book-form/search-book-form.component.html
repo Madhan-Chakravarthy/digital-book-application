@@ -1,19 +1,24 @@
 <h1>Search Book</h1>
-<form #searchForm="ngForm" (ngSubmit)="serachBook(searchForm.value)">
-  <br> <br>
-  <input type="text" ngModel name="tittle" placeholder="Book tittle">
-  <br> <br>
-  <input type="number" ngModel name="price" placeholder="price">
-  <br> <br>
-  <input type="text" ngModel name="publisher" placeholder="Publisher">
-  <br> <br>
-  <select name="category"  ngModel>
+<form #searchForm="ngForm" (ngSubmit)="viewSearchBookList(searchForm.value)">
+  <br />
+  <br />
+  <input type="text" ngModel name="tittle" placeholder="Book tittle" />
+  <br />
+  <br />
+  <input type="number" ngModel name="price" placeholder="price" />
+  <br />
+  <br />
+  <input type="text" ngModel name="publisher" placeholder="Publisher" />
+  <br />
+  <br />
+  <select name="category" ngModel>
     <option selected="COMIC" value="COMIC">COMIC</option>
     <option value="ADVENTURE">ADVENTURE</option>
     <option value="ROMANTIC">ROMANTIC</option>
-    </select>
-  <br><br>
-  <input type="text" ngModel name="author-name" placeholder="Author Name">
-  <br> <br>
+  </select>
+  <br /><br />
+  <input type="text" ngModel name="author-name" placeholder="Author Name" />
+  <br />
+  <br />
   <button>Search book</button>
 </form>

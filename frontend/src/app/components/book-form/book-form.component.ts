@@ -5,19 +5,16 @@ import { Book } from 'src/entity/book';
 @Component({
   selector: 'app-book-form',
   templateUrl: './book-form.component.html',
-  styleUrls: ['./book-form.component.scss']
+  styleUrls: ['./book-form.component.scss'],
 })
-export class BookFormComponent  {
-
-  constructor(public apiService:ApiService) { }
-  saveBook(book:Book){
-    const date= book.publishDate;
+export class BookFormComponent {
+  constructor(public apiService: ApiService) {}
+  saveBook(book: Book) {
     console.log(book);
-    const observable= this.apiService.saveBook(book);
-    observable.subscribe((response) =>
-    console.log(response),
-    (error)=>alert("something went wrong")
-  );
-
-}
+    const observable = this.apiService.saveBook(book);
+    observable.subscribe(
+      (response) => console.log(response),
+      (error) => alert('something went wrong')
+    );
+  }
 }
