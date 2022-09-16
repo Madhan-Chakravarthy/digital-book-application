@@ -1,5 +1,5 @@
 export interface Book {
-  id:number,
+  id:number;
   tittle: string;
   category:String,
   price: number;

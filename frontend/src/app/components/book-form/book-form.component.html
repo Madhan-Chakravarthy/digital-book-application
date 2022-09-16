@@ -1,31 +1,85 @@
-<h1>BOOK</h1>
-<br />
-<div class="container-fluid">
-  <form #bookForm="ngForm" (ngSubmit)="saveBook(bookForm.value)">
-    <input type="text" ngModel name="tittle" placeholder="Book tittle" />
-    <br />
-    <br />
-    <input type="number" ngModel name="price" placeholder="price" />
-    <br />
-    <br />
-    <input type="text" ngModel name="publisher" placeholder="Publisher" />
-    <br />
-    <br />
-    <input type="test" ngModel name="publishDate" data-date-format="DD/MM/YYYY" />
-    <br />
-    <br />
-    <input type="text" ngModel name="content" placeholder="content" />
-    <br />
-    <br />
-    Active : <input type="radio" ngModel name="active" [value]="true" />
-    <input type="radio" ngModel name="active" [value]="false" /> <br />
-    <br />
-    <select name="category" ngModel>
-      <option selected="COMIC" value="COMIC">COMIC</option>
-      <option value="ADVENTURE">ADVENTURE</option>
-      <option value="ROMANTIC">ROMANTIC</option>
-    </select>
-    <br /><br />
-    <button class="btn btn-primary">save book</button>
-  </form>
+<div class="container test-center my-3" style="max-width: 700px;">
+  <div class="card shadow p-5">
+    <form #bookForm="ngForm" (ngSubmit)="bookForm.valid && (bookForm.value)" *ngIf="status ==='form'" #f="ngForm"
+      novalidate>
+      <div class="text-center ">
+        <h1>Create Book</h1>
+      </div>
+      <div class="row my-3">
+        <label for="tittle" class="col-sm-2 col-form-label">Tittle</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" required ngModel #tittle="ngModel" id="tittle" name="tittle"
+            placeholder="tittle">
+        </div>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="tittle.errors && f.submitted">
+        tittle is required!
+      </div>
+      <div class="row mb-3">
+        <label for="price" class="col-sm-2 col-form-label">Price</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" ngModel #price="ngModel" required id="price" name="price"
+            placeholder="price">
+        </div>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="price.errors && f.submitted">
+        price is required!
+      </div>
+      <div class="row mb-3">
+        <label for="publisher" class="col-sm-2 col-form-label">Tittle</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ngModel id="publisher" #publisher="ngModel" required name="publisher"
+            placeholder="publisher">
+        </div>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="price.errors && f.submitted">
+        price is required!
+      </div>
+      <div class="row mb-3">
+        <label for="publishDate" class="col-sm-2 col-form-label">Date</label>
+        <div class="col-sm-10">
+          <input type="date" class="form-control" ngModel #publishDate="ngModel" required id="publishDate"
+            name="publishDate">
+        </div>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="publishDate.errors && f.submitted">
+        publish date is required!
+      </div>
+      <div class="row mb-3">
+        <label for="category" class="col-sm-2 col-form-label">Category</label>
+        <div class="col-sm-10">
+          <select name="category" id="category" class="form-control" ngModel #category="ngModel" required>
+            <option selected="COMIC" value="COMIC">COMIC</option>
+            <option value="ADVENTURE">ADVENTURE</option>
+            <option value="ROMANTIC">ROMANTIC</option>
+          </select>
+        </div>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="category.errors && f.submitted">
+        category is required!
+      </div>
+      <div class="row mb-3">
+        <label for="active" class="col-sm-2 col-form-label">Active</label>
+        <div class="col-sm-10">
+          <input type="radio" ngModel name="active" [value]="true" #active="ngModel" required />
+          <input type="radio" ngModel name="active" [value]="false" #active="ngModel" required />
+        </div>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="active.errors && f.submitted">
+        Active is required!
+      </div>
+      <div class="row mb-3">
+        <label for="content" class="col-sm-2 col-form-label">Content</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ngModel id="content" name="content" placeholder="content">
+        </div>
+      </div>
+      <div class="text-center mt-5">
+        <button class="btn btn-success">Save Book</button>
+      </div>
+    </form>
+    <div *ngIf="status==='success'" class="text-center">
+      Sucessfully uploaded your book.
+    </div>
+  </div>
 </div>

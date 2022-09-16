@@ -7,6 +7,9 @@ const API_URL='http://localhost:8080/';
   providedIn: 'root'
 })
 export class ApiService {
+  authorsBook(id:number) {
+    return this.client.get(API_URL+'author/'+id+'/book/');
+  }
 
   constructor(private client:HttpClient) { }
 
@@ -16,7 +19,7 @@ export class ApiService {
    getBookById(id:number){
     return this.client.get(API_URL+'reader/books/'+id);
    }
-   searchBook(searchDetails:SearchBook){
+   searchBook(searchDetails:any){
     let params = new HttpParams({
      fromObject:{
       "tittle":searchDetails.tittle,

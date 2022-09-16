@@ -7,14 +7,19 @@ import { Book } from 'src/entity/book';
   templateUrl: './book-form.component.html',
   styleUrls: ['./book-form.component.scss'],
 })
+
 export class BookFormComponent {
+  status:string='form';
   constructor(public apiService: ApiService) {}
   saveBook(book: Book) {
     console.log(book);
     const observable = this.apiService.saveBook(book);
     observable.subscribe(
-      (response) => console.log(response),
-      (error) => alert('something went wrong')
+      (response) => {console.log(response)
+      this.status='success';},
+      (error) => {
+        this.status='error';
+        }
     );
   }
 }

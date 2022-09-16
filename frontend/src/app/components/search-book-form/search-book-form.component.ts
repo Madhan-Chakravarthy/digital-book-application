@@ -12,13 +12,14 @@ export class SearchBookFormComponent {
   constructor(public apiService: ApiService,private route: Router) {}
   books: Book[] = [];
   viewSearchBookList(search: SearchBook){
-    this.route.navigate(['books'],{queryParams:{search}})
+    if(!search.price) search.price =0;
+  this.route.navigate(['books'],{queryParams:{
+    tittle:search.tittle,
+    publisher:search.publisher,
+    price:search.price,
+    authorName:search.authorName,
+    category: search.category
+  }})
   }
-  serachBook(search: SearchBook) {
-    const observable = this.apiService.searchBook(search);
-    observable.subscribe(
-      (response) => console.log(response),
-      (error) => alert('something went wrong')
-    );
-  }
+
 }

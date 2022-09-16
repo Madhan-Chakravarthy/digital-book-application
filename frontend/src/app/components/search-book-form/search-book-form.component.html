@@ -1,24 +1,49 @@
-<h1>Search Book</h1>
-<form #searchForm="ngForm" (ngSubmit)="viewSearchBookList(searchForm.value)">
-  <br />
-  <br />
-  <input type="text" ngModel name="tittle" placeholder="Book tittle" />
-  <br />
-  <br />
-  <input type="number" ngModel name="price" placeholder="price" />
-  <br />
-  <br />
-  <input type="text" ngModel name="publisher" placeholder="Publisher" />
-  <br />
-  <br />
-  <select name="category" ngModel>
-    <option selected="COMIC" value="COMIC">COMIC</option>
-    <option value="ADVENTURE">ADVENTURE</option>
-    <option value="ROMANTIC">ROMANTIC</option>
-  </select>
-  <br /><br />
-  <input type="text" ngModel name="author-name" placeholder="Author Name" />
-  <br />
-  <br />
-  <button>Search book</button>
-</form>
+<div class="container test-center mt-3" style="max-width: 700px;">
+  <div class="card shadow p-5">
+    <form #searchForm="ngForm" (ngSubmit)="f.form.valid && viewSearchBookList(searchForm.value)"   #f="ngForm">
+      <div class="text-center ">
+        <h1>Search Book</h1>
+      </div>
+      <div class="row my-3">
+        <label for="tittle" class="col-sm-2 col-form-label">Tittle</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ngModel id="tittle" name="tittle" placeholder="tittle">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="price" class="col-sm-2 col-form-label">Price</label>
+        <div class="col-sm-10">
+          <input type="number" class="form-control" ngModel id="price" name="price" placeholder="price">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="publisher" class="col-sm-2 col-form-label">Tittle</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ngModel id="publisher" name="publisher" placeholder="publisher">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="author-name" class="col-sm-2 col-form-label">Author</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" ngModel id="author-name" name="author-name" placeholder="Author Name">
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="category" class="col-sm-2 col-form-label">Category</label>
+        <div class="col-sm-10">
+          <select name="category" id="category" class="form-control" ngModel  #category="ngModel" required>
+            <option selected="COMIC" value="COMIC">COMIC</option>
+            <option value="ADVENTURE">ADVENTURE</option>
+            <option value="ROMANTIC">ROMANTIC</option>
+          </select>
+        </div>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="category.errors && f.submitted">
+        category is required!
+      </div>
+      <div class="text-center mt-5">
+        <button class="btn btn-success">Search book</button>
+      </div>
+    </form>
+  </div>
+</div>

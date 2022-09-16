@@ -12,6 +12,8 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 import { SearchBookFormComponent } from './components/search-book-form/search-book-form.component';
 import { BookDetailsComponent } from './components/book-details/book-details.component';
 import { BookListComponent } from './components/book-list/book-list.component';
+import { HomeScreenComponent } from './components/home-screen/home-screen.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 
 
@@ -24,7 +26,9 @@ import { BookListComponent } from './components/book-list/book-list.component';
     SignupFormComponent,
     SearchBookFormComponent,
     BookDetailsComponent,
-    BookListComponent
+    BookListComponent,
+    HomeScreenComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

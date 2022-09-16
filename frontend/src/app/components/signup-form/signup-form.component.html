@@ -1,18 +1,53 @@
-<div class="container" style="max-width: 500px;">
-  <form #bookForm="ngForm">
-    <h2 class="text-center">SIGNUP</h2>
-
-    <div class="form-group">
-      <label for="user_name">User Name:</label>
-      <input type="text" class="form-control" ngModel name="username" placeholder="User Name">
-    </div>
-
-    <div class="form-group">
-      <label for="pwd">Password:</label>
-      <input type="password" class="form-control" ngModel name="password" placeholder="password">
-    </div>
-    <div class="text-center">
-    <button class="btn btn-success text-center">Signup</button>
+<div class="container mt-3" style="max-width: 500px;">
+  <div class="card shadow p-5">
+    <form #signupForm="ngForm" (ngSubmit)="f.form.valid && signup(signupForm.value)" #f="ngForm">
+      <h2 class="text-center">SIGNUP</h2>
+      <div class="form-group mt-3">
+        <label for="user_name">User Name:</label>
+        <input type="text" class="form-control" ngModel id="username" name="username" ngModel placeholder="User Name" #username="ngModel" required>
       </div>
-  </form>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="username.errors && f.submitted">
+        user name is required!
+      </div>
+      <div class="form-group mt-3">
+        <label for="name">Full Name:</label>
+        <input type="text" class="form-control" ngModel id="name" name="name"  ngModel placeholder="Full Name" #name="ngModel" required>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="name.errors && f.submitted">
+        full name is required!
+      </div>
+      <div class="form-group mt-3">
+        <label for="email">Full Name:</label>
+        <input type="email" class="form-control" ngModel id="email" name="email" ngModel  placeholder="Email" #email="ngModel" required email>
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="email.errors && f.submitted">
+       enter the valid email!
+      </div>
+      <div class="form-group mt-3">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" ngModel id="password" ngModel name="password" placeholder="password" #password="ngModel" required minlength="6">
+      </div>
+      <div class="alert alert-danger mb-3" role="alert" *ngIf="password.errors && f.submitted">
+        password length should be atleast 6 character
+      </div>
+      <div class="form-check mt-3">
+        <input class="form-check-input" type="checkbox" name="author" ngModel value=true id="author">
+        <label class="form-check-label" for="author" >
+          Author Role
+        </label>
+      </div>
+      <div class="form-check mt-3">
+        <input class="form-check-input" type="checkbox" name="reader" ngModel value=true id="reader">
+        <label class="form-check-label" for="reader">
+          Reader Role
+        </label>
+      </div>
+      <div class="alert alert-danger my-3" role="alert" *ngIf="error !==''">
+        {{error}}
+       </div>
+      <div class="text-center mt-4">
+        <button class="btn btn-success text-center">Signup</button>
+      </div>
+    </form>
+  </div>
 </div>
