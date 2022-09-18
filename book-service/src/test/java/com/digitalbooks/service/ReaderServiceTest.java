@@ -62,10 +62,10 @@ public class ReaderServiceTest {
 	@Test
 	void testGetBookById() {
 		when(readerRepository.findById(1)).thenReturn( Optional.of(mockdata.readers.get(0)));
-		assertEquals(readerService.getBookById(1, 1), mockdata.books.get(0));
+		assertEquals(readerService.getPurchasedBookById(1, 1), mockdata.books.get(0));
 		mockdata.readers.get(0).setPurchasedBooks(Collections.emptySet());
 		when(readerRepository.findById(1)).thenReturn( Optional.of(mockdata.readers.get(0)));
-		assertEquals(readerService.getBookById(1, 1), null);
+		assertEquals(readerService.getPurchasedBookById(1, 1), null);
 		mockdata.readers.get(0).setPurchasedBooks(mockdata.books.stream().collect(Collectors.toSet()));
 	}
 	

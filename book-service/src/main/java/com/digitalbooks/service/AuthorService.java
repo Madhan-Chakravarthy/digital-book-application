@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.digitalbooks.entity.Book;
+import com.digitalbooks.entity.Author;
 import com.digitalbooks.repository.AuthorRepository;
 import com.digitalbooks.repository.Bookrepository;
 
@@ -46,4 +47,8 @@ public class AuthorService {
 		return bookrepository.findByAuthorId(id);
 	}
 
+	public Author saveAuthor(Author author) {
+		return authorRepository.save(author);
+		
+	}
 }

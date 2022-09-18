@@ -44,12 +44,11 @@ public class Book {
 	@Min(value = 0, message = "price should not be negative value")
 	private Double price;
 	@Column
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate publishDate;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private String publishDate;
 	@Column
 	private String publisher;
-	@Column(nullable = false)
+	@Column (nullable = false)
 	private Boolean active;
 	@Column(nullable = false)
 	private String content;

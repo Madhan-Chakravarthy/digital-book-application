@@ -6,13 +6,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +18,9 @@ import org.springframework.web.client.RestTemplate;
 
 import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Book;
-import com.digitalbooks.entity.Reader;
+import com.digitalbooks.entity.Payment;
+import com.digitalbooks.entity.PaymentRequest;
+import com.digitalbooks.entity.ResponseMessage;
 import com.digitalbooks.service.ReaderService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +33,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/reader")
-@PreAuthorize("hasRole('READER')")
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class ReaderController extends BaseController  {
+public class ReaderController  extends BaseController{
 
 	@Autowired
 	ReaderService readerService;
@@ -52,22 +51,36 @@ public class ReaderController extends BaseController  {
 	 * @return list of books
 	 */
 	@GetMapping("/books/search")
-	@PreAuthorize("hasRole('READER')")
 	public List<Book> searchBooks(@RequestParam String tittle, @RequestParam BookCategory category,
 			@RequestParam Double price, @RequestParam String publisher, @RequestParam String authorName) {
 		List<Book> books = readerService.searchBooks(tittle, category, price, publisher, authorName);
 		return books;
 	}
+	
+	@GetMapping("/books/ssearch")
+	public List<Book> simpleSearchBooks(@RequestParam String searchParam) {
+		log.debug(searchParam);
+		List<Book> books = readerService.simpleSearchBooks(searchParam);
+		return books;
+	}
+	@GetMapping("/books/{bookId}")
+	public ResponseEntity<Book> getBookById( @PathVariable Integer bookId) {
+		log.debug("Entering into getBookById");
+		Book book = readerService.getBookById( bookId);
+		if (book != null)
+			return new ResponseEntity<Book>(book, HttpStatus.OK);
 
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
 	/**
 	 * End point to search view all purchased book by reader
 	 * 
 	 * @param readerId
 	 * @return book
 	 */
-	@GetMapping("/{readerId}/books/buy")
-	public Set<Book> getPurchasedBooks(@PathVariable Integer readerId) {
-		return readerService.getPurchasedBooks(readerId);
+	@GetMapping("/{userId}/books/buy")
+	public Set<Book> getPurchasedBooks(@PathVariable Long userId) {
+		return readerService.getPurchasedBooks(userId);
 	}
 
 	/**
@@ -77,16 +90,15 @@ public class ReaderController extends BaseController  {
 	 * @param bookId
 	 * @return book
 	 */
-	@GetMapping("/{readerId}/books/{bookId}")
-	public ResponseEntity<Book> getBookById(@PathVariable Integer readerId, @PathVariable Integer bookId) {
-		log.debug("Entering into getBookById");
-		Book book = readerService.getBookById(readerId, bookId);
-		if (book != null)
-			return new ResponseEntity<Book>(book, HttpStatus.OK);
-
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-
+	/*
+	 * @GetMapping("/{userId}/books/{bookId}") public ResponseEntity<Book>
+	 * getPurchasedBookById(@PathVariable Integer userId, @PathVariable Integer
+	 * bookId) { log.debug("Entering into getBookById"); Book book =
+	 * readerService.getPurchasedBookById(userId, bookId); if (book != null) return
+	 * new ResponseEntity<Book>(book, HttpStatus.OK);
+	 * 
+	 * return new ResponseEntity<>(HttpStatus.NOT_FOUND); }
+	 */
 	/**
 	 * End point to purchase the book by reader
 	 * 
@@ -94,16 +106,15 @@ public class ReaderController extends BaseController  {
 	 * @param bookId
 	 * @return ResponseEntity
 	 */
-	@PatchMapping("/{readerId}/books/buy/{bookId}")
-	public ResponseEntity<Set<Book>> purchaseBook(@PathVariable Integer readerId, @PathVariable Integer bookId) {
+	@PostMapping("/{userId}/books/buy/")
+	public ResponseEntity<?> purchaseBook(@PathVariable Long userId,@RequestBody PaymentRequest paymentRequest) {
 		log.debug("Entering into purchaseBook");
-		Reader reader=readerService.purchaseBook(readerId, bookId);
-		Set<Book> books = reader.getPurchasedBooks();
-		if (books != null && !books.isEmpty()) {
-			return new ResponseEntity<Set<Book>>(books, HttpStatus.OK);
+		Payment payment=readerService.purchaseBook(userId,paymentRequest);
+		if (payment!=null) {
+			return new ResponseEntity<ResponseMessage>(new ResponseMessage("successfully purchased"), HttpStatus.CREATED);
 		}
 
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 }

@@ -1,19 +1,28 @@
 package com.digitalbooks.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.enums.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Book;
-import com.digitalbooks.entity.Reader;
+import com.digitalbooks.entity.Payment;
+import com.digitalbooks.entity.PaymentRequest;
+import com.digitalbooks.entity.User;
 import com.digitalbooks.repository.Bookrepository;
-import com.digitalbooks.repository.ReaderRepository;
+import com.digitalbooks.repository.PaymentRepository;
+import com.digitalbooks.repository.UserRepository;
 
 /**
  * 
@@ -25,9 +34,12 @@ import com.digitalbooks.repository.ReaderRepository;
 public class ReaderService {
 	@Autowired
 	Bookrepository bookrepository;
-
+	
 	@Autowired
-	ReaderRepository readerRepository;
+	PaymentRepository paymentRepository;
+	
+	@Autowired
+	UserRepository userRepository;
 
 	/**
 	 * business logic to search the book from all list of book
@@ -53,13 +65,15 @@ public class ReaderService {
 	 * @param bookId
 	 * @return book
 	 */
-	public Book getBookById(Integer readerId, Integer bookId) {
-		Set<Book> books = readerRepository.findById(readerId).get().getPurchasedBooks();
-		List<Book> booksById = books.stream().filter(book -> book.getId() == bookId).collect(Collectors.toList());
-		if (!booksById.isEmpty())
-			return booksById.get(0);
-		return null;
-	}
+	/*
+	 * public Book getPurchasedBookById(Long readerId, Integer bookId) {
+	 * List<Payment> payments = paymentRepository.findByUserId(readerId); Set<Book>
+	 * books = new HashSet<Book>(); payments.stream().map(null)
+	 * //readerRepository.findById(readerId).get().getPurchasedBooks(); List<Book>
+	 * booksById = books.stream().filter(book -> book.getId() ==
+	 * bookId).collect(Collectors.toList()); if (!booksById.isEmpty()) return
+	 * booksById.get(0); return null; }
+	 */
 
 	/**
 	 * business logic to get all purchased book by reader
@@ -67,10 +81,14 @@ public class ReaderService {
 	 * @param readerId
 	 * @return
 	 */
-	public Set<Book> getPurchasedBooks(Integer readerId) {
-		Optional<Reader> reader = readerRepository.findById(readerId);
-		if (reader.isPresent()) {
-			return reader.get().getPurchasedBooks();
+	public Set<Book> getPurchasedBooks(Long userId) {
+		List<Payment> payments = paymentRepository.findByUserId(userId);
+		Set<Book> books = new HashSet<Book>();
+		payments.forEach(payment->{
+			books.addAll(payment.getPurchasedBooks());
+		});
+		if (!books.isEmpty()) {
+			return books;
 		}
 		return Collections.emptySet();
 	}
@@ -82,13 +100,31 @@ public class ReaderService {
 	 * @param bookId
 	 * @return
 	 */
-	public Reader purchaseBook(Integer readerId, Integer bookId) {
-		Book book = bookrepository.findById(bookId).get();
-		Reader reader = readerRepository.findById(readerId).get();
-		Set<Book> purchasedBook = reader.getPurchasedBooks();
-		purchasedBook.add(book);
-		readerRepository.save(reader);
-		return readerRepository.save(reader);
+	public Payment purchaseBook( Long userId,PaymentRequest paymentRequest) {	
+		User user =userRepository.findById(userId).get();
+		Payment payment = new Payment();
+		payment.setDate(LocalDate.now());
+		payment.setTime(LocalTime.now());
+		payment.setUser(user);
+		Set<Book> books = new HashSet<Book>();
+		paymentRequest.getBookIds().forEach(id->	{
+			books.add(bookrepository.findById(id).get());
+		});
+		payment.setPurchasedBooks(books);
+		return paymentRepository.save(payment);
 
+	}
+
+	public Book getBookById(Integer bookId) {
+		return bookrepository.findById(bookId).get();
+	}
+
+	public List<Book> simpleSearchBooks(String searchParam) {
+		 for (BookCategory category :BookCategory.values()) {
+		        if (category.name().equalsIgnoreCase(searchParam)) {
+		            return bookrepository.findByCategory(category);
+		        }
+		    }
+		 return bookrepository.findByTittleIgnoreCaseOrPublisherIgnoreCaseOrAuthorNameIgnoreCase(searchParam, searchParam, searchParam);
 	}
 }

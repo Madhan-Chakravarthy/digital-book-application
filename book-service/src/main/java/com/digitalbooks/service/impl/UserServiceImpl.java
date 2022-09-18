@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.digitalbooks.entity.ERole;
+import com.digitalbooks.entity.Role;
 import com.digitalbooks.entity.User;
 import com.digitalbooks.repository.RoleRepository;
 import com.digitalbooks.repository.UserRepository;
@@ -30,13 +32,23 @@ public class UserServiceImpl implements UserService ,UserDetailsService{
 	UserRepository userRepository;
 	@Autowired
 	RoleRepository roleRepository;
-	@Autowired
-	PasswordEncoder passwordEncoder;
 	@Override
 	public User signup(User user) {
 		log.info("Saving new user to database",user.getUsername());
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return userRepository.save(user);
+	}
+	public Boolean validateUserEmail(String email) {
+		
+		return userRepository.existsByEmail(email);
+	}
+	
+	public Role findRole(ERole role) {
+		return roleRepository.findByName(role);
+	}
+
+	public Boolean validateUserName(String userName) {
+		
+		return 	userRepository.existsByUsername(userName);
 	}
 	@Override
 	public User getUser(String username) {

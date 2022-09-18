@@ -34,4 +34,7 @@ public class User {
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Role> roles = new HashSet<>();
+	
+	@OneToOne
+	 private Author author;
 }

@@ -52,11 +52,11 @@ public class ReaderControllerTest {
 
 	@Test
 	void testGetBookById() {
-		when(readerService.getBookById(1, 2)).thenReturn(mockdata.books.get(1));
-		assertEquals(readerController.getBookById(1, 2),
+		when(readerService.getPurchasedBookById(1, 2)).thenReturn(mockdata.books.get(1));
+		assertEquals(readerController.getPurchasedBookById(1, 2),
 				new ResponseEntity<Book>(mockdata.books.get(1), HttpStatus.OK));
-		when(readerService.getBookById(1, 5)).thenReturn(null);
-		assertEquals(readerController.getBookById(1, 5), new ResponseEntity<>(HttpStatus.NOT_FOUND));
+		when(readerService.getPurchasedBookById(1, 5)).thenReturn(null);
+		assertEquals(readerController.getPurchasedBookById(1, 5), new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
 
 	@Test

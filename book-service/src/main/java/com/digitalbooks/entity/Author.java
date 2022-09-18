@@ -24,7 +24,6 @@ public class Author {
 	@Column(nullable = false)
 	@Size(message = "Author name should not be empty")
 	private String name;
-	@Column(unique = true, nullable = false)
-	@Email(message = "please enter valid email")
-	private String mailId;
+	@Column
+	private String aboutAuthor;
 }

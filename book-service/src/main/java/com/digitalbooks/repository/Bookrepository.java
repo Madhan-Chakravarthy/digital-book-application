@@ -11,6 +11,11 @@ public interface Bookrepository extends JpaRepository<Book, Integer> {
 
 	List<Book> findByAuthorId(Integer id);
 
+	List<Book> findByCategory(BookCategory category);
+
+	List<Book> findByTittleIgnoreCaseOrPublisherIgnoreCaseOrAuthorNameIgnoreCase(String tittle, String publisher,
+			String name);
+
 	List<Book> findByTittleIgnoreCaseOrCategoryOrPriceOrPublisherIgnoreCaseOrAuthorNameIgnoreCase(String tittle,
 			BookCategory category, Double price, String publisher, String name);
 }

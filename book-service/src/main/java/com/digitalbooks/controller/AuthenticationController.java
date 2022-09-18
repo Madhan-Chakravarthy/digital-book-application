@@ -1,27 +1,35 @@
 package com.digitalbooks.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digitalbooks.entity.Login;
+import com.digitalbooks.entity.Author;
+import com.digitalbooks.entity.ERole;
+import com.digitalbooks.entity.LoginRequest;
+import com.digitalbooks.entity.Role;
+import com.digitalbooks.entity.SignupRequest;
 import com.digitalbooks.entity.User;
 import com.digitalbooks.security.jwt.JwtUtility;
+import com.digitalbooks.service.AuthorService;
 import com.digitalbooks.service.impl.UserServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/auth")
 @Slf4j
+@CrossOrigin
 public class AuthenticationController {
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -37,9 +46,14 @@ public class AuthenticationController {
 	UserServiceImpl userSevice;
 	@Autowired
 	private JwtUtility jwtUtility;
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	AuthorService authorService;
 
 	@PostMapping("/login")
-	public String authenticateUser(@Valid @RequestBody Login login) throws Exception {
+	public String authenticateUser(@Valid @RequestBody LoginRequest login) throws Exception {
 
 		try {
 			authenticationManager
@@ -49,19 +63,63 @@ public class AuthenticationController {
 		}
 
 		final UserDetails userDetails = userSevice.loadUserByUsername(login.getUsername());
-		log.info("security {}",userDetails.toString());
+		log.info("security {}", userDetails.toString());
 		final String token = jwtUtility.generateToken(userDetails);
-		List<String> roles = userDetails.getAuthorities().stream()
-				.map(item -> item.getAuthority())
+		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
-		log.info("roles {}",roles);
+		log.info("roles {}", roles);
 		return token;
 
 	}
+
 	@PostMapping("/signup")
-	public User signup(@RequestBody User user){
-		return userSevice.signup(user);
-	    
+	public ResponseEntity<?> signup(@RequestBody SignupRequest signUp) {
+		if (userSevice.validateUserEmail(signUp.getEmail())) {
+			return new ResponseEntity<>("Email already exist!",HttpStatus.BAD_REQUEST);
+		}
+		if (userSevice.validateUserName(signUp.getUsername())) {
+			return new ResponseEntity<>("User name already exist!",HttpStatus.BAD_REQUEST);
+		}
+		if (signUp.getRole().isEmpty()) {
+			return new ResponseEntity<>("Select atleast one role!",HttpStatus.BAD_REQUEST);
+		}else {
+			User user = new User();
+			user.setUsername(signUp.getUsername());
+			user.setEmail(signUp.getEmail());
+			user.setPassword(passwordEncoder.encode(signUp.getPassword()));
+			Set<Role> roles = new HashSet<>();
+			signUp.getRole().forEach(role -> {
+				switch (role) {
+				case "reader":
+					Role readerRole =userSevice.findRole(ERole.ROLE_READER);
+					roles.add(readerRole);
+					user.setRoles(roles);
+					/*
+					 * Reader reader = new Reader(); reader.setReaderName(signUp.getName());
+					 * user.setReader(reader);
+					 */
+					break;
+				case "author":
+					Role authorRole =userSevice.findRole(ERole.ROLE_AUTHOR);
+					roles.add(authorRole);
+					user.setRoles(roles);
+					  Author author = new Author();
+					  author.setName(signUp.getName());
+					  author.setAboutAuthor(signUp.getAboutAuthor());
+					  Author savedAuthor=authorService.saveAuthor(author);
+					  if(savedAuthor!=null) {
+						  user.setAuthor(author);
+					  }					  
+					 
+					break;
+				}
+			});
+			userSevice.signup(user);
+		}
+ 
+		
+		return  new ResponseEntity<>(HttpStatus.OK);
+
 	}
 
 }

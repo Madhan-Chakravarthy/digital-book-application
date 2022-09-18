@@ -56,11 +56,14 @@ public class AuthorController extends BaseController {
 		Book book1 = authorService.saveBook(book, authorId);
 		if (book1 != null) {
 			
-			  HttpHeaders headers = new HttpHeaders();
-			  headers.setContentType(MediaType.APPLICATION_JSON); Author author
-			  =book1.getAuthor(); HttpEntity<Author> requestEntity = new
-			  HttpEntity<>(author, headers);
-			restTemplate.postForEntity("http://localhost:9000/kafka/email/publish", requestEntity,Author.class);
+			/*
+			 * HttpHeaders headers = new HttpHeaders();
+			 * headers.setContentType(MediaType.APPLICATION_JSON); Author author
+			 * =book1.getAuthor(); HttpEntity<Author> requestEntity = new
+			 * HttpEntity<>(author, headers);
+			 * restTemplate.postForEntity("http://localhost:9000/kafka/email/publish",
+			 * requestEntity,Author.class);
+			 */
 			return new ResponseEntity<Book>(book1,HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
