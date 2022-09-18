@@ -22,6 +22,7 @@ export class SignupFormComponent implements OnInit {
       email:userData.email,
       username:userData.username,
       password:userData.password,
+      aboutAuthor:userData.aboutAuthor,
       role: this.roleList
     }
 

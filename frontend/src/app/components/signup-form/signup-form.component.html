@@ -42,6 +42,10 @@
           Reader Role
         </label>
       </div>
+      <div class="form-group mt-3"*ngIf="signupForm.value.author">
+        <label for="about-author">About Author:</label>
+        <input type="text" class="form-control" ngModel id="about-author" ngModel name="aboutAuthor" placeholder="About" #password="ngModel" >
+      </div>
       <div class="alert alert-danger my-3" role="alert" *ngIf="error !==''">
         {{error}}
        </div>

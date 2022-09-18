@@ -19,6 +19,8 @@ search:SearchBook={
   publisher:'NA'
 }
 books:any=[];
+searchParam:string='';
+key:string='';
   ngOnInit(): void {
    this.route.queryParams.subscribe((params)=>{
     this.search.tittle=params['tittle'];
@@ -26,13 +28,32 @@ books:any=[];
     this.search.publisher=params['publisher'];
     this.search.category=params['category'];
     this.search.price=params['price'];
+    this.searchParam=params['searchParam'];
+     this.key=params['key'];
+     if(this.key==='search')
+     this.searchBookHandler(this.search);
+
+     if(this.key==='simple-search')
+     this.simpleSearchBookHandler(this.searchParam);
+
+     if(this.key==='author'){
+      console.log('else author')
+      this.authorsBook();
+     }
+     if(this.key==='reader'){
+      console.log('else part')
+      this.readersBook();
+     }
    })
-   if(this.search.category !=undefined)
-   this.searchBookHandler(this.search);
-   else{
-    console.log('else part')
-    this.authorsBook(1);
-   }
+
+  }
+  readersBook() {
+    const observable = this.apiService.raedersBook();
+    observable.subscribe(
+      (response) =>{ console.log(response)
+        this.books=response},
+      (error) => alert('something went wrong')
+    );
   }
 
   searchBookHandler(search: SearchBook) {
@@ -44,8 +65,17 @@ books:any=[];
       (error) => alert('something went wrong')
     );
   }
-  authorsBook(id:number){
-    const observable = this.apiService.authorsBook(id);
+  simpleSearchBookHandler(searchParam:string) {
+    console.log(searchParam);
+    const observable = this.apiService.SimplesearchBook(searchParam);
+    observable.subscribe(
+      (response) =>{ console.log(response)
+        this.books=response},
+      (error) => alert('something went wrong')
+    );
+  }
+  authorsBook(){
+    const observable = this.apiService.authorsBook();
     observable.subscribe(
       (response) =>{ console.log(response)
         this.books=response},

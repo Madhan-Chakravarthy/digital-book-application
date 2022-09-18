@@ -1,13 +1,13 @@
 <section class="my-3 container">
   <div class="row">
     <div  *ngFor="let book of books" class="col-md-3">
-        <div class="card shadow-lg text-center m-1">
+        <div class="card shadow-lg text-center my-2">
           <div class="card-body">
             <img src="https://cdn.pixabay.com/photo/2015/11/19/21/10/glasses-1052010__340.jpg"
               alt="assets/images/sample.jpg" class="img-fluid">
             <h4 class="card-text">{{book.tittle}}</h4>
             <p class="card-text">{{book.category}}</p>
-            <a class="btn btn-success btn-sm" routerLink="/books/{{book.id}}">BUY NOW</a>
+            <a class="btn btn-success btn-sm" routerLink="/books/{{book.id}}">{{key==='reader'||key==='author'?'View Book':'BUY NOW'}}</a>
           </div>
         </div>
       </div>

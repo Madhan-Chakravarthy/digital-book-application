@@ -3,12 +3,31 @@ import { Injectable } from '@angular/core';
 import { Book, SearchBook } from 'src/entity/book';
 
 const API_URL='http://localhost:8080/';
+const userId=1;
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  authorsBook(id:number) {
-    return this.client.get(API_URL+'author/'+id+'/book/');
+  SimplesearchBook(searchParam: string) {
+    let params = new HttpParams({
+      fromObject:{
+       "searchParam":searchParam
+      }
+     });
+     return this.client.get(API_URL + 'reader/books/ssearch',{params:params});
+  }
+  raedersBook() {
+    return this.client.get(API_URL+'reader/'+ userId+'/books/buy/');
+  }
+  puchaseBook(bookIds: number[]) {
+   const books={
+    bookIds
+   }
+   console.log(books);
+    return this.client.post(API_URL+'reader/'+ userId+'/books/buy/',books)
+  }
+  authorsBook() {
+    return this.client.get(API_URL+'author/'+userId+'/book/');
   }
 
   constructor(private client:HttpClient) { }

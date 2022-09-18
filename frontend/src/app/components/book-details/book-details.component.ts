@@ -25,5 +25,17 @@ export class BookDetailsComponent implements OnInit {
       }
     )
   }
+  status:string='buy';
+  purchaseBook(bookId:number){
+   const bookIds =[bookId];
+    const observable = this.apiService.puchaseBook(bookIds);
+    observable.subscribe(
+      (response) => {console.log(response)
+      this.status='success';},
+      (error) => {
+        this.status='fail';
+        }
+    );
+  }
 
 }

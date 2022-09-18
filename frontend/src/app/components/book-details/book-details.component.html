@@ -2,7 +2,7 @@
   <div class="row d-flex justify-content-center">
       <div class="col-md-10">
           <div class="card shadow">
-              <div class="row">
+              <div class="row" *ngIf="status==='buy'">
                   <div class="col-md-6">
                       <div class="images p-3">
                         <img src="https://cdn.pixabay.com/photo/2015/11/19/21/10/glasses-1052010__340.jpg" alt="assets/images/sample.jpg" class="img-fluid" >
@@ -13,11 +13,20 @@
                         <h5 class="text-uppercase mt-1">{{book.tittle}}</h5>
                           <div class="mt-1 mb-3"> <span class="text-uppercase text-muted brand">by madhan</span>
                           </div>
-                          <p class="about">{{book.content}}</p>
-                          <p class="about">{{ book.price | currency:"INR":"symbol" }}</p>
-                          <div class="cart mt-4 align-items-center"> <button class="btn btn-danger mr-2 px-4">BUY NOW</button> </div>
-                      </div>
+                          <p class="about">Category: {{book.category}}</p>
+                          <p class="about">Content :{{book.content}}</p>
+                          <p class="about">Price   :{{ book.price | currency:"INR":"symbol" }}</p>
+                          <div class="cart mt-4 align-items-center" (click)="purchaseBook(book.id)"> <button class="btn btn-danger mr-2 px-4">BUY NOW</button> </div>
+                          <div class="cart mt-4 align-items-center" routerLink="/books/view/1"> <button class="btn btn-danger mr-2 px-4">Open Book</button> </div>
+
+                        </div>
                   </div>
+              </div>
+              <div *ngIf="status==='success'" class="text-center p-5">
+                Sucessfully uploaded your book.
+              </div>
+              <div *ngIf="status==='fail'" class="text-center p-5">
+                Failed to purchase the book.
               </div>
           </div>
       </div>

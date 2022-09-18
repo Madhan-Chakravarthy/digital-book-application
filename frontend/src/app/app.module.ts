@@ -14,6 +14,8 @@ import { BookDetailsComponent } from './components/book-details/book-details.com
 import { BookListComponent } from './components/book-list/book-list.component';
 import { HomeScreenComponent } from './components/home-screen/home-screen.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component';
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 
 
 
@@ -28,13 +30,15 @@ import { FooterComponent } from './components/footer/footer.component';
     BookDetailsComponent,
     BookListComponent,
     HomeScreenComponent,
-    FooterComponent
+    FooterComponent,
+    PdfViewerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxExtendedPdfViewerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

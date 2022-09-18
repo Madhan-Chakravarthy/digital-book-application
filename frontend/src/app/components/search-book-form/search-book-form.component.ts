@@ -9,7 +9,7 @@ import { Book, SearchBook } from 'src/entity/book';
   styleUrls: ['./search-book-form.component.scss'],
 })
 export class SearchBookFormComponent {
-  constructor(public apiService: ApiService,private route: Router) {}
+  constructor(private route: Router) {}
   books: Book[] = [];
   viewSearchBookList(search: SearchBook){
     if(!search.price) search.price =0;
@@ -18,7 +18,8 @@ export class SearchBookFormComponent {
     publisher:search.publisher,
     price:search.price,
     authorName:search.authorName,
-    category: search.category
+    category: search.category,
+    key:'search'
   }})
   }
 
