@@ -11,6 +11,7 @@ export class SignupFormComponent implements OnInit {
   constructor(public auth:AuthService) { }
  signupdata:any;
  roleList:string[]=[];
+ status:string='form';
  error:string='';
   ngOnInit(): void {
   }
@@ -30,6 +31,7 @@ export class SignupFormComponent implements OnInit {
     const observable = this.auth.signup(this.signupdata);
     observable.subscribe(
       (response) => {console.log('hiii');
+      this.status='success';
       },
       (error) => {
         this.error=error.error;

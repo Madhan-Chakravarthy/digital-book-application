@@ -9,6 +9,9 @@ const API_URL='http://localhost:8080/';
   providedIn: 'root'
 })
 export class ApiService {
+  editBook(bookId: number, book: Book) {
+    return this.client.put(API_URL +'author/'+this.userId+'/book/' + bookId,book);
+  }
   userId:number=1;
   constructor(private client:HttpClient, private tokenStorageService: TokenStorageService) { this.userId=tokenStorageService.getUser().id }
   SimplesearchBook(searchParam: string) {
@@ -34,7 +37,7 @@ export class ApiService {
   }
 
   saveBook(book:Book){
-    return this.client.post(API_URL +'author/1/book',book);
+    return this.client.post(API_URL +'author/'+this.userId+'/book',book);
    }
    getBookById(id:number){
     return this.client.get(API_URL+'reader/'+ this.userId + '/books/'+id);

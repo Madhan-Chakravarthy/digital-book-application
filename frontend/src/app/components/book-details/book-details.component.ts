@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Book } from 'src/entity/book';
 
@@ -10,7 +10,7 @@ import { Book } from 'src/entity/book';
 })
 export class BookDetailsComponent implements OnInit {
 
-  constructor(private apiService:ApiService,private route:ActivatedRoute) { }
+  constructor(private apiService:ApiService,private route:ActivatedRoute,private router: Router) { }
   book:any;
   key:string='';
   ngOnInit(): void {
@@ -42,5 +42,4 @@ export class BookDetailsComponent implements OnInit {
         }
     );
   }
-
 }

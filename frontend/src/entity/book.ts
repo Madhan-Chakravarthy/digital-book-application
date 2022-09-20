@@ -3,11 +3,10 @@ export interface Book {
   tittle: string;
   category:String,
   price: number;
-  publishDate: Date;
+  publishDate: any;
   active: Boolean;
   content: String;
   purchased:boolean;
-  authorsBook:boolean;
   author:any;
 }
 export interface SearchBook {

@@ -16,9 +16,9 @@
                           <p class="about">Category: {{book.category}}</p>
                           <p class="about">Content :{{book.content}}</p>
                           <p class="about">Price   :{{ book.price | currency:"INR":"symbol" }}</p>
-                          <div class="cart mt-4 align-items-center" *ngIf="!book.purchased and key !=='author'" (click)="purchaseBook(book.id)"> <button class="btn btn-danger mr-2 px-4">BUY NOW</button> </div>
-                          <div class="cart mt-4 align-items-center" *ngIf="book.purchased or key==='author'" routerLink="/books/view/1"> <button class="btn btn-danger mr-2 px-4">Open Book</button> </div>
-
+                          <div class="cart mt-4 align-items-center" *ngIf="!book.purchased && key !=='author'" (click)="purchaseBook(book.id)"> <button class="btn btn-danger mr-2 px-4">BUY NOW</button> </div>
+                          <div class="cart mt-4 align-items-center" *ngIf="book.purchased || key==='author'" routerLink="/books/view/1"> <button class="btn btn-success mr-2 px-4">Open Book</button> </div>
+                          <div class="cart mt-4 align-items-center" *ngIf="key==='author'" routerLink="/savebook/{{book.id}}" > <button class="btn btn-danger mr-2 px-4" >Edit Book</button> </div>
                         </div>
                   </div>
               </div>

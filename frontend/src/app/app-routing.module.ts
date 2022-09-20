@@ -13,6 +13,7 @@ import { SignupFormComponent } from './components/signup-form/signup-form.compon
 const routes: Routes = [
   {path:'', component: HomeScreenComponent},
   {path:'savebook', component: BookFormComponent},
+  {path:'savebook/:id', component: BookFormComponent},
   {path:'searchbook', component: SearchBookFormComponent},
   {path:'login', component: LoginFormComponent},
   {path:'signup', component: SignupFormComponent},

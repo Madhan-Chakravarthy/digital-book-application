@@ -1,6 +1,6 @@
 <div class="container mt-3" style="max-width: 500px;">
   <div class="card shadow p-5">
-    <form #signupForm="ngForm" (ngSubmit)="f.form.valid && signup(signupForm.value)" #f="ngForm">
+    <form #signupForm="ngForm" (ngSubmit)="f.form.valid && signup(signupForm.value)" #f="ngForm" *ngIf="status==='form'">
       <h2 class="text-center">SIGNUP</h2>
       <div class="form-group mt-3">
         <label for="user_name">User Name:</label>
@@ -53,5 +53,11 @@
         <button class="btn btn-success text-center">Signup</button>
       </div>
     </form>
+    <div *ngIf="status==='success'" class="text-center">
+      <div> Successfully created account in Digital Books</div>
+      <div class="text-center mt-4">
+        <button routerLink="/login" class="btn btn-success text-center">Signup</button>
+      </div>
+    </div>
   </div>
 </div>
