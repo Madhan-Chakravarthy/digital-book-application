@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.digitalbooks.entity.Book;
 import com.digitalbooks.mockData.MockData;
 import com.digitalbooks.repository.AuthorRepository;
-import com.digitalbooks.repository.Bookrepository;
+import com.digitalbooks.repository.BookRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthorServiceTest {
@@ -23,7 +23,7 @@ public class AuthorServiceTest {
 	AuthorService authorService;
 
 	@Mock
-	Bookrepository bookrepository;
+	BookRepository bookrepository;
 
 	@Mock
 	AuthorRepository authorRepository;

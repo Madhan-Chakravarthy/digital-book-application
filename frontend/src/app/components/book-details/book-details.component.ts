@@ -12,7 +12,11 @@ export class BookDetailsComponent implements OnInit {
 
   constructor(private apiService:ApiService,private route:ActivatedRoute) { }
   book:any;
+  key:string='';
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params)=>{
+       this.key=params['key'];
+    });
     this.route.paramMap.subscribe(()=>{
       this.handleBookDetails();
     })
@@ -25,6 +29,7 @@ export class BookDetailsComponent implements OnInit {
       }
     )
   }
+
   status:string='buy';
   purchaseBook(bookId:number){
    const bookIds =[bookId];

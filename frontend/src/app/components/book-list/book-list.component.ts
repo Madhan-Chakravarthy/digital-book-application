@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import { Book, SearchBook } from 'src/entity/book';
 
@@ -10,7 +10,7 @@ import { Book, SearchBook } from 'src/entity/book';
 })
 export class BookListComponent implements OnInit {
 
-  constructor(private apiService:ApiService,private route:ActivatedRoute) { }
+  constructor(private apiService:ApiService,private route:ActivatedRoute,private router: Router) { }
 search:SearchBook={
   tittle:'NA',
   authorName:'NA',
@@ -82,6 +82,10 @@ key:string='';
       (error) => alert('something went wrong')
     );
   }
-
+  getBookById(id:number){
+  this.router.navigate(['books/'+id],{queryParams:{
+      key:this.key
+    }})
+  }
 
 }

@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/reader")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = {"Authorization","Origin"})
 public class ReaderController  extends BaseController{
 
 	@Autowired
@@ -63,10 +63,10 @@ public class ReaderController  extends BaseController{
 		List<Book> books = readerService.simpleSearchBooks(searchParam);
 		return books;
 	}
-	@GetMapping("/books/{bookId}")
-	public ResponseEntity<Book> getBookById( @PathVariable Integer bookId) {
+	@GetMapping("/{userId}/books/{bookId}")
+	public ResponseEntity<Book> getBookById( @PathVariable Long userId, @PathVariable Integer bookId) {
 		log.debug("Entering into getBookById");
-		Book book = readerService.getBookById( bookId);
+		Book book = readerService.getBookById( userId,bookId);
 		if (book != null)
 			return new ResponseEntity<Book>(book, HttpStatus.OK);
 

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.digitalbooks.entity.Author;
 import com.digitalbooks.entity.ERole;
 import com.digitalbooks.entity.LoginRequest;
+import com.digitalbooks.entity.LoginResponse;
 import com.digitalbooks.entity.Role;
 import com.digitalbooks.entity.SignupRequest;
 import com.digitalbooks.entity.User;
 import com.digitalbooks.security.jwt.JwtUtility;
 import com.digitalbooks.service.AuthorService;
+import com.digitalbooks.service.impl.UserDetailsImpl;
 import com.digitalbooks.service.impl.UserServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,22 +56,25 @@ public class AuthenticationController {
 	AuthorService authorService;
 
 	@PostMapping("/login")
-	public String authenticateUser(@Valid @RequestBody LoginRequest login) throws Exception {
+	public ResponseEntity<LoginResponse>  authenticateUser(@Valid @RequestBody LoginRequest login) throws Exception {
 
-		try {
-			authenticationManager
+
+			Authentication authentication =authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()));
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
-		}
 
-		final UserDetails userDetails = userSevice.loadUserByUsername(login.getUsername());
+		UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();	
 		log.info("security {}", userDetails.toString());
+		log.info("security ****************** {}", userDetails.toString());
 		final String token = jwtUtility.generateToken(userDetails);
 		List<String> roles = userDetails.getAuthorities().stream().map(item -> item.getAuthority())
 				.collect(Collectors.toList());
 		log.info("roles {}", roles);
-		return token;
+		LoginResponse loginResponse = new LoginResponse();
+		loginResponse.setId(userDetails.getId());
+		loginResponse.setToken(token);
+		loginResponse.setRoles(roles);
+	   
+		return new ResponseEntity<LoginResponse>(loginResponse,HttpStatus.OK);
 
 	}
 

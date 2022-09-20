@@ -4,7 +4,7 @@ import {  BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { BookFormComponent } from './components/book-form/book-form.component';
 import { LoginFormComponent } from './components/login-form/login-form.component';
@@ -16,7 +16,7 @@ import { HomeScreenComponent } from './components/home-screen/home-screen.compon
 import { FooterComponent } from './components/footer/footer.component';
 import { PdfViewerComponent } from './components/pdf-viewer/pdf-viewer.component';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
-
+import { TokenInterceptorServiceService } from './services/token-interceptor-service.service';
 
 
 @NgModule({
@@ -40,7 +40,11 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
     HttpClientModule,
     NgxExtendedPdfViewerModule
   ],
-  providers: [],
+  providers: [{
+    provide : HTTP_INTERCEPTORS,
+    useClass: TokenInterceptorServiceService,
+    multi   : true,
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

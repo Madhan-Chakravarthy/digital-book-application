@@ -39,15 +39,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable()
+		http.cors().and().csrf().disable()
 		.authorizeRequests()
-		.anyRequest().permitAll()
-				/*
-				 * .antMatchers("/auth/**").permitAll()
-				 * .antMatchers("/author/**").hasAuthority(ERole.ROLE_AUTHOR.name())
-				 * .antMatchers("/reader/**").hasAuthority(ERole.ROLE_READER.name())
-				 * .anyRequest().authenticated()
-				 */
+		//.anyRequest().permitAll()
+				
+				.antMatchers("/auth/**").permitAll()
+				//  .antMatchers("/author/**").hasAuthority(ERole.ROLE_AUTHOR.name())
+				//  .antMatchers("/reader/**").hasAuthority(ERole.ROLE_READER.name())
+				.anyRequest().authenticated()
+				 
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

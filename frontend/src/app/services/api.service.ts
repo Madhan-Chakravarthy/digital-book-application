@@ -1,13 +1,16 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Book, SearchBook } from 'src/entity/book';
+import { TokenStorageService } from './token-storage.service';
 
 const API_URL='http://localhost:8080/';
-const userId=1;
+
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+  userId:number=1;
+  constructor(private client:HttpClient, private tokenStorageService: TokenStorageService) { this.userId=tokenStorageService.getUser().id }
   SimplesearchBook(searchParam: string) {
     let params = new HttpParams({
       fromObject:{
@@ -17,26 +20,24 @@ export class ApiService {
      return this.client.get(API_URL + 'reader/books/ssearch',{params:params});
   }
   raedersBook() {
-    return this.client.get(API_URL+'reader/'+ userId+'/books/buy/');
+    return this.client.get(API_URL+'reader/'+ this.userId+'/books/buy/');
   }
   puchaseBook(bookIds: number[]) {
    const books={
     bookIds
    }
    console.log(books);
-    return this.client.post(API_URL+'reader/'+ userId+'/books/buy/',books)
+    return this.client.post(API_URL+'reader/'+ this.userId+'/books/buy/',books)
   }
   authorsBook() {
-    return this.client.get(API_URL+'author/'+userId+'/book/');
+    return this.client.get(API_URL+'author/'+this.userId+'/book/');
   }
-
-  constructor(private client:HttpClient) { }
 
   saveBook(book:Book){
     return this.client.post(API_URL +'author/1/book',book);
    }
    getBookById(id:number){
-    return this.client.get(API_URL+'reader/books/'+id);
+    return this.client.get(API_URL+'reader/'+ this.userId + '/books/'+id);
    }
    searchBook(searchDetails:any){
     let params = new HttpParams({

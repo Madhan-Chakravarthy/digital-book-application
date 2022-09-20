@@ -52,4 +52,7 @@ public class Book {
 	private Boolean active;
 	@Column(nullable = false)
 	private String content;
+	
+	private Boolean purchased;
+	private Boolean authorsBook;
 }

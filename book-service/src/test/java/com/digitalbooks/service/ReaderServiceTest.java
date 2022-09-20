@@ -18,7 +18,7 @@ import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Book;
 import com.digitalbooks.entity.Reader;
 import com.digitalbooks.mockData.MockData;
-import com.digitalbooks.repository.Bookrepository;
+import com.digitalbooks.repository.BookRepository;
 import com.digitalbooks.repository.ReaderRepository;
 
 
@@ -29,7 +29,7 @@ public class ReaderServiceTest {
 	@InjectMocks
 	ReaderService readerService;
 	@Mock
-	Bookrepository bookRepository;
+	BookRepository bookRepository;
 	@Mock
 	ReaderRepository readerRepository;
 	

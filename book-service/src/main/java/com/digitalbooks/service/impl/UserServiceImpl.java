@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import com.digitalbooks.entity.ERole;
 import com.digitalbooks.entity.Role;
 import com.digitalbooks.entity.User;
@@ -62,15 +63,15 @@ public class UserServiceImpl implements UserService ,UserDetailsService{
 			log.info("User not found in the database");
 			throw new UsernameNotFoundException(username);
 		}else {
-			log.info("User found in the database :{}",username);
 			log.info("User found in the database :{}",user.toString());
+			return UserDetailsImpl.build(user);
 		}
-	List<SimpleGrantedAuthority> authorities=new ArrayList<>();
+	/*ist<SimpleGrantedAuthority> authorities=new ArrayList<>();
 	user.getRoles().forEach(role->{
 		authorities.add(new SimpleGrantedAuthority(role.getName().name()));
 	});
 	
-		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);
+		return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);*/
 	}
 	public List<User> getUsers() {
 		return userRepository.findAll();

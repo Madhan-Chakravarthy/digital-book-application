@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Book;
 
-public interface Bookrepository extends JpaRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Integer> {
 
 	List<Book> findByAuthorId(Integer id);
 

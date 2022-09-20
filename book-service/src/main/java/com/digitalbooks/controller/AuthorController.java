@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.digitalbooks.entity.Author;
 import com.digitalbooks.entity.Book;
 import com.digitalbooks.service.AuthorService;
 
@@ -35,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/author")
 @PreAuthorize("hasRole('AUTHOR')")
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", allowedHeaders = {"Authorization","Origin"})
 public class AuthorController extends BaseController {
 
 	@Autowired
@@ -76,9 +75,18 @@ public class AuthorController extends BaseController {
 	 * @return book
 	 */
 	@GetMapping("/{id}/book")
-	@PreAuthorize("hasRole('AUTHOR')")
-	public List<Book> getAuthorsBooks(@PathVariable Integer id) {
+	public List<Book> getAuthorsBooks(@PathVariable Long id) {
 		log.debug("Entering into getAuthorsBooks");
 		return authorService.getAuthorsBooks(id);
+	}
+	
+	@GetMapping("/{userId}/books/{bookId}")
+	public ResponseEntity<Book> getBookById( @PathVariable Long userId, @PathVariable Integer bookId) {
+		log.debug("Entering into getBookById");
+		Book book = authorService.getBookById( userId,bookId);
+		if (book != null)
+			return new ResponseEntity<Book>(book, HttpStatus.OK);
+
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 }

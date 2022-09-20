@@ -10,6 +10,7 @@ export class HomeScreenComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

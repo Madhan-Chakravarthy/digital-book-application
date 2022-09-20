@@ -20,7 +20,7 @@ import com.digitalbooks.entity.Book;
 import com.digitalbooks.entity.Payment;
 import com.digitalbooks.entity.PaymentRequest;
 import com.digitalbooks.entity.User;
-import com.digitalbooks.repository.Bookrepository;
+import com.digitalbooks.repository.BookRepository;
 import com.digitalbooks.repository.PaymentRepository;
 import com.digitalbooks.repository.UserRepository;
 
@@ -33,7 +33,7 @@ import com.digitalbooks.repository.UserRepository;
 @Service
 public class ReaderService {
 	@Autowired
-	Bookrepository bookrepository;
+	BookRepository bookrepository;
 	
 	@Autowired
 	PaymentRepository paymentRepository;
@@ -115,8 +115,19 @@ public class ReaderService {
 
 	}
 
-	public Book getBookById(Integer bookId) {
-		return bookrepository.findById(bookId).get();
+	public Book getBookById( Long userId,Integer bookId) {
+		List<Integer> bookIds=paymentRepository.findByUserId(userId)
+				.stream()
+				.map(Payment::getPurchasedBooks)
+				.flatMap(Set::stream)
+				.map(Book::getId)
+				.collect(Collectors.toList());
+		Book book =bookrepository.findById(bookId).get();
+		if(bookIds.contains(bookId)) 
+			book.setPurchased(true);
+		else
+			book.setPurchased(false);
+		return book;
 	}
 
 	public List<Book> simpleSearchBooks(String searchParam) {

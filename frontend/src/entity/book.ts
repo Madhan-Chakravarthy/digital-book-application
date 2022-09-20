@@ -6,6 +6,9 @@ export interface Book {
   publishDate: Date;
   active: Boolean;
   content: String;
+  purchased:boolean;
+  authorsBook:boolean;
+  author:any;
 }
 export interface SearchBook {
   tittle: string;
