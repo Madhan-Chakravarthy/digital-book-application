@@ -6,9 +6,9 @@
         </button>
     <div class="collapse navbar-collapse justify-content-end " id="navbarNavAltMarkup">
       <div  class="navbar-nav ml-auto">
-        <form *ngIf="showReaderBoard" class="d-flex" #searchParam="ngForm" (ngSubmit)="simpleSearchBook(searchParam.value)">
-          <input class="form-control me-2"   type="search" ngModel name="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" >Search</button>
+        <form *ngIf="showReaderBoard" class="d-flex" #searchParam="ngForm" (ngSubmit)="searchParam.valid &&simpleSearchBook(searchParam.value)">
+          <input class="form-control me-2"   type="search" ngModel name="search" required placeholder="Search" aria-label="Search">
+          <button *ngIf="searchParam.value.search!==''" class="btn btn-outline-success" >Search</button>
         </form>
         <a *ngIf="showAuthorBoard && isLoggedIn" class="nav-link" aria-current="page" routerLink="/savebook" >Add my Book</a>
         <a *ngIf="showReaderBoard && isLoggedIn" class="nav-link" routerLink="/searchbook" >Deep Search</a>
