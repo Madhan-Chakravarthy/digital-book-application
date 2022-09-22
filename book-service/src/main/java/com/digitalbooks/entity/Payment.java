@@ -16,9 +16,15 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
+
+@Getter
+@Setter
+@EqualsAndHashCode
 @Entity
-@Data
 public class Payment {
 
 	@Id

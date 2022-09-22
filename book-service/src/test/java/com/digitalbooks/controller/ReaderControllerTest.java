@@ -2,6 +2,8 @@ package com.digitalbooks.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -16,9 +18,10 @@ import org.springframework.http.ResponseEntity;
 
 import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Book;
-import com.digitalbooks.entity.Reader;
+import com.digitalbooks.entity.PaymentRequest;
+import com.digitalbooks.entity.ResponseMessage;
 import com.digitalbooks.mockData.MockData;
-import com.digitalbooks.service.ReaderService;
+import com.digitalbooks.service.impl.ReaderServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class ReaderControllerTest {
@@ -26,44 +29,58 @@ public class ReaderControllerTest {
 	@InjectMocks
 	ReaderController readerController;
 	@Mock
-	ReaderService readerService;
+	ReaderServiceImpl readerService;
 
 	MockData mockdata = new MockData();
+
 	@Test
 	void testPurchaseBook() {
-		Reader reader = mockdata.readers.get(0);
-		reader.setPurchasedBooks(mockdata.books.subList(0, 1).stream().collect(Collectors.toSet()));
-		when(readerService.purchaseBook(1, 1)).thenReturn(mockdata.readers.get(0));
-		assertEquals(readerController.purchaseBook(1, 1),
-				new ResponseEntity<Set<Book>>(reader.getPurchasedBooks(), HttpStatus.OK));
-		reader.setPurchasedBooks(null);
-		when(readerService.purchaseBook(4, 5)).thenReturn(reader);
-		assertEquals(readerController.purchaseBook(4, 5), new ResponseEntity<>(HttpStatus.NOT_FOUND));
+		PaymentRequest paymentRequest = new PaymentRequest();
+		Set<Integer> bookIds = new HashSet<Integer>();
+		bookIds.add(1);
+		bookIds.add(2);
+		bookIds.add(3);
+		paymentRequest.setBookIds(bookIds);
+		when(readerService.purchaseBook((long) 2, paymentRequest)).thenReturn(mockdata.payments.get(0));
+		assertEquals(readerController.purchaseBook((long) 2, paymentRequest),
+				 new ResponseEntity<ResponseMessage>(new ResponseMessage("successfully purchased"), HttpStatus.CREATED));
+
+		when(readerService.purchaseBook((long) 2, paymentRequest)).thenReturn(null);
+		assertEquals(readerController.purchaseBook((long) 2, paymentRequest), new ResponseEntity<>(HttpStatus.BAD_REQUEST));
 
 	}
 
 	@Test
 	void testGetPurchasedBooks() {
-		for (int i = 0; i < mockdata.readers.size(); i++) {
-			when(readerService.getPurchasedBooks(i)).thenReturn(mockdata.readers.get(i).getPurchasedBooks());
-			assertEquals(readerController.getPurchasedBooks(i), mockdata.readers.get(i).getPurchasedBooks());
-		}
+		when(readerService.getPurchasedBooks((long) 2)).thenReturn(new HashSet<Book>(mockdata.books));
+		assertEquals(readerController.getPurchasedBooks((long) 2), new HashSet<Book>(mockdata.books));
 	}
 
 	@Test
 	void testGetBookById() {
-		when(readerService.getPurchasedBookById(1, 2)).thenReturn(mockdata.books.get(1));
-		assertEquals(readerController.getPurchasedBookById(1, 2),
+		when(readerService.getBookById((long) 1, 1)).thenReturn(mockdata.books.get(1));
+		assertEquals(readerController.getBookById((long) 1, 1),
 				new ResponseEntity<Book>(mockdata.books.get(1), HttpStatus.OK));
-		when(readerService.getPurchasedBookById(1, 5)).thenReturn(null);
-		assertEquals(readerController.getPurchasedBookById(1, 5), new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+		when(readerService.getBookById((long) 1, 5)).thenReturn(null);
+		assertEquals(readerController.getBookById((long) 1, 5), new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
 	}
 
 	@Test
-	void testsearchBooks() {
+	void testSearchBooks() {
 		List<Book> books = mockdata.books.stream().filter(book -> book.getCategory().equals("COMIC"))
 				.collect(Collectors.toList());
-		when(readerService.searchBooks("tittle",BookCategory.COMIC, 100.39, "The Hidu", "AuthorA")).thenReturn(books);
-		assertEquals(readerController.searchBooks("tittle",BookCategory.COMIC, 100.39, "The Hidu", "AuthorA"), books);
+		when(readerService.searchBooks("tittle", BookCategory.COMIC, 100.39, "The Hidu", "AuthorA")).thenReturn(books);
+		assertEquals(readerController.searchBooks("tittle", BookCategory.COMIC, 100.39, "The Hidu", "AuthorA"), books);
+	}
+
+	@Test
+	void testSimpleSearchBooks() {
+		// List<Book> books = mockdata.books.stream().filter(book ->
+		// book.getCategory().equals("COMIC"))
+		// .collect(Collectors.toList());
+		when(readerService.simpleSearchBooks("COMIC")).thenReturn(mockdata.books);
+		assertEquals(readerController.simpleSearchBooks("COMIC"), mockdata.books);
 	}
 }

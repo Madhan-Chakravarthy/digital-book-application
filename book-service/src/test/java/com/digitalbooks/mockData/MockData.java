@@ -1,14 +1,24 @@
 package com.digitalbooks.mockData;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Author;
 import com.digitalbooks.entity.Book;
-import com.digitalbooks.entity.Reader;
+import com.digitalbooks.entity.ERole;
+import com.digitalbooks.entity.Payment;
+import com.digitalbooks.entity.Role;
+import com.digitalbooks.entity.User;
+import com.digitalbooks.service.impl.UserServiceImpl;
+import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 public class MockData {
 
@@ -16,18 +26,20 @@ public class MockData {
 
 	public  List<Book> books = new ArrayList<Book>();
 
-	public  List<Reader> readers = new ArrayList<Reader>();
+	public  List<User> users = new ArrayList<User>();
+	
+	public  List<Payment> payments = new ArrayList<Payment>();
 
 public MockData(){
 		Author author = new Author();
 		author.setId(1);
 		author.setName("Author1");
-		author.setMailId("author1@gmail.com");
+		author.setAboutAuthor("about author");
 		authors.add(author);
 		Author author1 = new Author();
 		author1.setId(2);
 		author1.setName("Author2");
-		author1.setMailId("author2@gmail.com");
+		author1.setAboutAuthor("about author");
 		authors.add(author1);
 
 		Book book = new Book();
@@ -39,7 +51,7 @@ public MockData(){
 		book.setContent("first book content");
 		book.setImage("url");
 		book.setPrice(100.3);
-		book.setPublishDate(LocalDate.now());
+		book.setPublishDate("12-11-2021");
 		book.setPublisher("Publisher A");
 		books.add(book);
 
@@ -52,12 +64,12 @@ public MockData(){
 		book1.setContent("second book content");
 		book1.setImage("url");
 		book1.setPrice(200.3);
-		book1.setPublishDate(LocalDate.now());
+		book1.setPublishDate("12-11-2021");
 		book1.setPublisher("Publisher B");
 		books.add(book1);
 
 		Book book2 = new Book();
-		book2.setId(2);
+		book2.setId(3);
 		book2.setActive(true);
 		book2.setAuthor(authors.get(1));
 		book2.setTittle("Second Book");
@@ -65,23 +77,55 @@ public MockData(){
 		book2.setContent("second book content");
 		book2.setImage("url");
 		book2.setPrice(200.3);
-		book2.setPublishDate(LocalDate.now());
+		book2.setPublishDate("12/11/2021");
 		book2.setPublisher("Publisher B");
 		books.add(book2);
 
-		Reader reader = new Reader();
-		reader.setId(1);
-		reader.setReaderMailId("readerA@gmail.com");
-		reader.setPurchasedBooks(books.stream().collect(Collectors.toSet()));
-		reader.setReaderName("Reder2");
-		readers.add(reader);
-
-		Reader reader1 = new Reader();
-		reader1.setId(2);
-		reader1.setReaderMailId("readerA@gmail.com");
-		reader1.setPurchasedBooks(books.stream().collect(Collectors.toSet()));
-		reader1.setReaderName("Reder2");
-		readers.add(reader1);
+		User user1 = new User();
+		user1.setId((long) 1);
+		user1.setEmail("user1@email.com");
+		user1.setPassword("123456");
+		user1.setAuthor(author);
+		user1.setUsername("user1");
+	    Set<Role> roles = new HashSet<Role>();
+	    Role role = new Role();
+	    role.setId(1);
+	    role.setName(ERole.ROLE_AUTHOR);
+	    roles.add(role);
+		user1.setRoles(roles);
+		users.add(user1);
+		
+		User user2 = new User();
+		user2.setId((long) 1);
+		user2.setEmail("user1@email.com");
+		user2.setPassword("123456");
+		user2.setAuthor(author);
+		user2.setUsername("user1");
+	    Set<Role> roles1 = new HashSet<Role>();
+	    Role role1 = new Role();
+	    role1.setId(2);
+	    role1.setName(ERole.ROLE_READER);
+	    roles1.add(role);
+	    roles1.add(role1);
+		user2.setRoles(roles);
+		users.add(user2);
+		
+		Payment payment = new Payment();
+		payment.setId(null);
+		payment.setDate(LocalDate.now());
+		payment.setUser(user2);
+		payment.setPurchasedBooks(new HashSet<Book>(books));
+		payments.add(payment);
+		
+		Payment payment1 = new Payment();
+		payment1.setId((long) 2);
+		payment1.setDate(LocalDate.now());
+		payment1.setUser(user2);
+		payment1.setPurchasedBooks(Collections.EMPTY_SET);
+		payments.add(payment1);
+		
+		
+		
 
 	}
 

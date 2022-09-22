@@ -14,13 +14,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.digitalbooks.entity.Book;
-import com.digitalbooks.service.AuthorService;
+import com.digitalbooks.service.impl.AuthorServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,12 +34,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/author")
-@PreAuthorize("hasRole('AUTHOR')")
-@CrossOrigin(origins = "*", allowedHeaders = {"Authorization","Origin"})
-public class AuthorController extends BaseController {
+@CrossOrigin(origins = "*")
+public class AuthorController {
 
 	@Autowired
-	AuthorService authorService;
+	AuthorServiceImpl authorService;
 	@Autowired
 	RestTemplate restTemplate;
 
@@ -49,10 +49,10 @@ public class AuthorController extends BaseController {
 	 * @param book
 	 * @return ResponseEntity
 	 */
-	@PostMapping("/{authorId}/book")
-	public ResponseEntity<Book> saveBook(@PathVariable Integer authorId, @Validated @RequestBody Book book) {
+	@PostMapping("/{userId}/book")
+	public ResponseEntity<Book> saveBook(@PathVariable Long userId, @Validated @RequestBody Book book) {
 		log.debug("Entering into saveBook");
-		Book book1 = authorService.saveBook(book, authorId);
+		Book book1 = authorService.saveBook(book, userId);
 		if (book1 != null) {
 			
 			/*
@@ -80,13 +80,23 @@ public class AuthorController extends BaseController {
 		return authorService.getAuthorsBooks(id);
 	}
 	
-	@GetMapping("/{userId}/books/{bookId}")
-	public ResponseEntity<Book> getBookById( @PathVariable Long userId, @PathVariable Integer bookId) {
-		log.debug("Entering into getBookById");
-		Book book = authorService.getBookById( userId,bookId);
-		if (book != null)
-			return new ResponseEntity<Book>(book, HttpStatus.OK);
-
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	/*
+	 * @GetMapping("/{userId}/books/{bookId}") public ResponseEntity<Book>
+	 * getBookById( @PathVariable Long userId, @PathVariable Integer bookId) {
+	 * log.debug("Entering into getBookById"); Book book =
+	 * authorService.getBookById( userId,bookId); if (book != null) return new
+	 * ResponseEntity<Book>(book, HttpStatus.OK);
+	 * 
+	 * return new ResponseEntity<>(HttpStatus.NOT_FOUND); }
+	 */
+	
+	@PutMapping("/{userId}/book/{bookId}")
+	public ResponseEntity<Book> editBook(@PathVariable Long userId,@PathVariable Integer bookId, @Validated @RequestBody Book book) {
+		log.debug("Entering into saveBook");
+		Book book1 = authorService.editBook(userId,bookId,book);
+		if (book1 != null) {
+			return new ResponseEntity<Book>(book1,HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }

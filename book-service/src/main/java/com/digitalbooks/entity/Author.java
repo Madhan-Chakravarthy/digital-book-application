@@ -8,6 +8,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -15,7 +18,9 @@ import lombok.Data;
  *         create the Author data in Database
  *
  */
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode
 @Entity
 public class Author {
 	@Id

@@ -18,6 +18,9 @@ import com.digitalbooks.common.BookCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -25,7 +28,8 @@ import lombok.Data;
  *         create the Book data in Database
  *
  */
-@Data
+@Getter
+@Setter
 @Entity
 public class Book {
 	@Id
@@ -54,5 +58,4 @@ public class Book {
 	private String content;
 	
 	private Boolean purchased;
-	private Boolean authorsBook;
 }

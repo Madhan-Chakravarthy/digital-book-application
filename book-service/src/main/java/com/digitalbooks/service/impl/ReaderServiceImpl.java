@@ -1,4 +1,4 @@
-package com.digitalbooks.service;
+package com.digitalbooks.service.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -23,6 +23,7 @@ import com.digitalbooks.entity.User;
 import com.digitalbooks.repository.BookRepository;
 import com.digitalbooks.repository.PaymentRepository;
 import com.digitalbooks.repository.UserRepository;
+import com.digitalbooks.service.ReaderService;
 
 /**
  * 
@@ -31,7 +32,7 @@ import com.digitalbooks.repository.UserRepository;
  *
  */
 @Service
-public class ReaderService {
+public class ReaderServiceImpl implements ReaderService {
 	@Autowired
 	BookRepository bookrepository;
 	
@@ -104,7 +105,7 @@ public class ReaderService {
 		User user =userRepository.findById(userId).get();
 		Payment payment = new Payment();
 		payment.setDate(LocalDate.now());
-		payment.setTime(LocalTime.now());
+	//	payment.setTime(LocalTime.now());
 		payment.setUser(user);
 		Set<Book> books = new HashSet<Book>();
 		paymentRequest.getBookIds().forEach(id->	{

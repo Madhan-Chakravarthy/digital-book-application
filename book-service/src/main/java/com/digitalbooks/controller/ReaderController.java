@@ -21,7 +21,7 @@ import com.digitalbooks.entity.Book;
 import com.digitalbooks.entity.Payment;
 import com.digitalbooks.entity.PaymentRequest;
 import com.digitalbooks.entity.ResponseMessage;
-import com.digitalbooks.service.ReaderService;
+import com.digitalbooks.service.impl.ReaderServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +37,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ReaderController  extends BaseController{
 
 	@Autowired
-	ReaderService readerService;
+	ReaderServiceImpl readerService;
 	@Autowired
 	RestTemplate restTemplate;
 	/**

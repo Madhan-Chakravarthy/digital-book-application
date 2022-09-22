@@ -31,7 +31,7 @@ import com.digitalbooks.entity.Role;
 import com.digitalbooks.entity.SignupRequest;
 import com.digitalbooks.entity.User;
 import com.digitalbooks.security.jwt.JwtUtility;
-import com.digitalbooks.service.AuthorService;
+import com.digitalbooks.service.impl.AuthorServiceImpl;
 import com.digitalbooks.service.impl.UserDetailsImpl;
 import com.digitalbooks.service.impl.UserServiceImpl;
 
@@ -53,7 +53,7 @@ public class AuthenticationController {
 	PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	AuthorService authorService;
+	AuthorServiceImpl authorService;
 
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponse>  authenticateUser(@Valid @RequestBody LoginRequest login) throws Exception {
@@ -80,6 +80,7 @@ public class AuthenticationController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody SignupRequest signUp) {
+		log.debug(signUp.toString());
 		if (userSevice.validateUserEmail(signUp.getEmail())) {
 			return new ResponseEntity<>("Email already exist!",HttpStatus.BAD_REQUEST);
 		}
@@ -100,10 +101,6 @@ public class AuthenticationController {
 					Role readerRole =userSevice.findRole(ERole.ROLE_READER);
 					roles.add(readerRole);
 					user.setRoles(roles);
-					/*
-					 * Reader reader = new Reader(); reader.setReaderName(signUp.getName());
-					 * user.setReader(reader);
-					 */
 					break;
 				case "author":
 					Role authorRole =userSevice.findRole(ERole.ROLE_AUTHOR);
