@@ -6,5 +6,5 @@ import lombok.Data;
 public class Author {
 	private Integer id;
 	private String name;
-	private String mailId;
+	private String aboutAuthor;
 }
