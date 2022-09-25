@@ -3,8 +3,11 @@ package com.digitalbooks.controller;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,15 +16,23 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.digitalbooks.entity.Author;
 import com.digitalbooks.entity.ERole;
+import com.digitalbooks.entity.LoginRequest;
+import com.digitalbooks.entity.LoginResponse;
 import com.digitalbooks.entity.Role;
 import com.digitalbooks.entity.SignupRequest;
-import com.digitalbooks.entity.User;
-import com.digitalbooks.service.AuthorService;
+import com.digitalbooks.mockData.MockData;
+import com.digitalbooks.security.jwt.JwtUtility;
 import com.digitalbooks.service.impl.AuthorServiceImpl;
+import com.digitalbooks.service.impl.UserDetailsImpl;
 import com.digitalbooks.service.impl.UserServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,9 +49,41 @@ class AuthenticationControllerTest {
 	
 	@Mock
 	AuthorServiceImpl authorService;
+	@Mock
+	Authentication authentication;
+	
+	@Mock
+	UserDetailsImpl userDetails;
+	
+	@Mock
+	JwtUtility jwtUtility;
+	@Mock
+	AuthenticationManager authenticationManager;
+	MockData mockData=new MockData();
 	@Test
-	void testAuthenticateUser() {
-		
+	void testAuthenticateUser() throws Exception {
+		LoginRequest loginRequest =new LoginRequest();
+		loginRequest.setUsername("user");
+		loginRequest.setPassword("pass");
+		when(authenticationManager
+				.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())))
+		.thenReturn(authentication);
+		List<String> roles= new ArrayList<String>();
+		roles.add("ROLE_AUTHOR");
+		List<GrantedAuthority> authorities = mockData.users.get(0).getRoles().stream()
+				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
+				.collect(Collectors.toList());
+		UserDetailsImpl userDetails=new UserDetailsImpl((long)1, "username", "email", "password", authorities);
+		when(authentication.getPrincipal())
+		.thenReturn(userDetails);
+		when(jwtUtility.generateToken(userDetails))
+		.thenReturn("token*****");
+		LoginResponse loginResponse = new LoginResponse();
+		loginResponse.setId(userDetails.getId());
+		loginResponse.setToken("token*****");
+		loginResponse.setRoles(roles);
+		assertEquals(authenticationController.authenticateUser(loginRequest), new ResponseEntity<LoginResponse>(loginResponse,HttpStatus.OK));
+
 	}
 	
 	@Test

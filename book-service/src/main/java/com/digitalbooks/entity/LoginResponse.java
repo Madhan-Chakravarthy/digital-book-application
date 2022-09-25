@@ -10,6 +10,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@EqualsAndHashCode
 public class LoginResponse {
 	private Long id;
 	private List<String> roles = new ArrayList<String>();

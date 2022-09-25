@@ -33,6 +33,7 @@ class AuthorTest {
 		author1.setName("Author2");
 		author1.setAboutAuthor("about author2");
 		assertEquals(author.equals(author1), false);
+		assertNotEquals(author.hashCode(), author1.hashCode());
 		
 		
 	}

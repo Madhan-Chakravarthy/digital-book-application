@@ -47,6 +47,7 @@ class PayamentTest {
 		payment1.setUser(mockdata.users.get(1));
 		
 		assertEquals(payment.equals(payment1), false);
+		assertNotEquals(payment.hashCode(), payment1.hashCode());
 
 	}
 

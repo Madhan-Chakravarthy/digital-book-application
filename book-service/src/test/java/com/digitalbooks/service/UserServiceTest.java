@@ -3,15 +3,11 @@ package com.digitalbooks.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
-import java.util.Collection;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.digitalbooks.entity.ERole;
@@ -84,7 +80,6 @@ class UserServiceTest {
 			userService.loadUserByUsername("user5");
 			});
 		when( userRepository.findByUsername("user1")).thenReturn(mockdata.users.get(0));
-		//when( userDetails.build(mockdata.users.get(0))).thenReturn(null);
 		System.out.println("******" +   userService.loadUserByUsername("user1").toString());
 		userService.loadUserByUsername("user1");
 	}

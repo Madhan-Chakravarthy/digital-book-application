@@ -1,19 +1,14 @@
 package com.digitalbooks.service.impl;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.enums.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Book;
@@ -35,10 +30,10 @@ import com.digitalbooks.service.ReaderService;
 public class ReaderServiceImpl implements ReaderService {
 	@Autowired
 	BookRepository bookrepository;
-	
+
 	@Autowired
 	PaymentRepository paymentRepository;
-	
+
 	@Autowired
 	UserRepository userRepository;
 
@@ -55,26 +50,10 @@ public class ReaderServiceImpl implements ReaderService {
 	public List<Book> searchBooks(String tittle, BookCategory category, Double price, String publisher, String name) {
 		List<Book> books = bookrepository
 				.findByTittleIgnoreCaseOrCategoryOrPriceOrPublisherIgnoreCaseOrAuthorNameIgnoreCase(tittle, category,
-						price, publisher, name);
+						price, publisher, name)
+				.stream().filter(book -> book.getActive() == true).collect(Collectors.toList());
 		return books;
 	}
-
-	/**
-	 * business logic to get book by in purchased list of book
-	 * 
-	 * @param readerId
-	 * @param bookId
-	 * @return book
-	 */
-	/*
-	 * public Book getPurchasedBookById(Long readerId, Integer bookId) {
-	 * List<Payment> payments = paymentRepository.findByUserId(readerId); Set<Book>
-	 * books = new HashSet<Book>(); payments.stream().map(null)
-	 * //readerRepository.findById(readerId).get().getPurchasedBooks(); List<Book>
-	 * booksById = books.stream().filter(book -> book.getId() ==
-	 * bookId).collect(Collectors.toList()); if (!booksById.isEmpty()) return
-	 * booksById.get(0); return null; }
-	 */
 
 	/**
 	 * business logic to get all purchased book by reader
@@ -85,7 +64,7 @@ public class ReaderServiceImpl implements ReaderService {
 	public Set<Book> getPurchasedBooks(Long userId) {
 		List<Payment> payments = paymentRepository.findByUserId(userId);
 		Set<Book> books = new HashSet<Book>();
-		payments.forEach(payment->{
+		payments.forEach(payment -> {
 			books.addAll(payment.getPurchasedBooks());
 		});
 		if (!books.isEmpty()) {
@@ -101,14 +80,13 @@ public class ReaderServiceImpl implements ReaderService {
 	 * @param bookId
 	 * @return
 	 */
-	public Payment purchaseBook( Long userId,PaymentRequest paymentRequest) {	
-		User user =userRepository.findById(userId).get();
+	public Payment purchaseBook(Long userId, PaymentRequest paymentRequest) {
+		User user = userRepository.findById(userId).get();
 		Payment payment = new Payment();
 		payment.setDate(LocalDate.now());
-	//	payment.setTime(LocalTime.now());
 		payment.setUser(user);
 		Set<Book> books = new HashSet<Book>();
-		paymentRequest.getBookIds().forEach(id->	{
+		paymentRequest.getBookIds().forEach(id -> {
 			books.add(bookrepository.findById(id).get());
 		});
 		payment.setPurchasedBooks(books);
@@ -116,27 +94,32 @@ public class ReaderServiceImpl implements ReaderService {
 
 	}
 
-	public Book getBookById( Long userId,Integer bookId) {
-		List<Integer> bookIds=paymentRepository.findByUserId(userId)
-				.stream()
-				.map(Payment::getPurchasedBooks)
-				.flatMap(Set::stream)
-				.map(Book::getId)
-				.collect(Collectors.toList());
-		Book book =bookrepository.findById(bookId).get();
-		if(bookIds.contains(bookId)) 
+	/**
+	 * Business logic to get book by id
+	 */
+	public Book getBookById(Long userId, Integer bookId) {
+		List<Integer> bookIds = paymentRepository.findByUserId(userId).stream().map(Payment::getPurchasedBooks)
+				.flatMap(Set::stream).map(Book::getId).collect(Collectors.toList());
+		Book book = bookrepository.findById(bookId).get();
+		if (bookIds.contains(bookId))
 			book.setPurchased(true);
 		else
 			book.setPurchased(false);
 		return book;
 	}
-
+	
+	/**
+	 * Business logic to search with one word 
+	 */
 	public List<Book> simpleSearchBooks(String searchParam) {
-		 for (BookCategory category :BookCategory.values()) {
-		        if (category.name().equalsIgnoreCase(searchParam)) {
-		            return bookrepository.findByCategory(category);
-		        }
-		    }
-		 return bookrepository.findByTittleIgnoreCaseOrPublisherIgnoreCaseOrAuthorNameIgnoreCase(searchParam, searchParam, searchParam);
+		for (BookCategory category : BookCategory.values()) {
+			if (category.name().equalsIgnoreCase(searchParam)) {
+				return bookrepository.findByCategory(category).stream().filter(book -> book.getActive() == true)
+						.collect(Collectors.toList());
+			}
+		}
+		return bookrepository.findByTittleIgnoreCaseOrPublisherIgnoreCaseOrAuthorNameIgnoreCase(searchParam,
+				searchParam, searchParam).stream().filter(book -> book.getActive() == true)
+				.collect(Collectors.toList());
 	}
 }

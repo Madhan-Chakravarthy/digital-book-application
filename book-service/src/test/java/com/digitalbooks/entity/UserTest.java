@@ -53,6 +53,7 @@ class UserTest {
 		user1.setPassword("pass1");
 
 		assertEquals(user.equals(user1), false);
+		assertNotEquals(user.hashCode(), user1.hashCode());
 	}
 
 }

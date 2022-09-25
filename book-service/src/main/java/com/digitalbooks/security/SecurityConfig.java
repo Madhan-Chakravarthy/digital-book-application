@@ -14,7 +14,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.digitalbooks.entity.ERole;
 import com.digitalbooks.security.jwt.JwtFilter;
 import com.digitalbooks.service.impl.UserServiceImpl;
-
+/**
+ * SecurityConfig implements the WebSecurityConfigurerAdapter and having configuration for spring security
+ * @author madhan
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -30,24 +34,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		auth.userDetailsService(userService);
 	}
-
+	/**
+	 * Been for AuthenticationManager
+	 */
 	@Override
 	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
 	}
-
+	/**
+	 * configuration for HttpSecurity to secure the end points 
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.cors().and().csrf().disable()
-		.authorizeRequests()
-		//.anyRequest().permitAll()
-				
-				.antMatchers("/auth/**").permitAll()
-				//  .antMatchers("/author/**").hasAuthority(ERole.ROLE_AUTHOR.name())
-				//  .antMatchers("/reader/**").hasAuthority(ERole.ROLE_READER.name())
-				.anyRequest().authenticated()
-				 
+		http.cors().and().csrf().disable().authorizeRequests()
+				// .anyRequest().permitAll()
+				  .antMatchers("/swagger-ui/**").permitAll() .antMatchers("/auth/**")
+				  .permitAll().antMatchers("/author/**").hasAuthority(ERole.ROLE_AUTHOR.name())
+				  .antMatchers("/reader/**").hasAuthority(ERole.ROLE_READER.name())
+				  .anyRequest().authenticated()				 
 				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

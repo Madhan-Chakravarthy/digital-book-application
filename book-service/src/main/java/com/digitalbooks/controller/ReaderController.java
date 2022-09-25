@@ -32,8 +32,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 @RestController
-@RequestMapping("/reader")
-@CrossOrigin(origins = "*", allowedHeaders = {"Authorization","Origin"})
+@RequestMapping("/")
+@CrossOrigin(origins = "*")
 public class ReaderController  extends BaseController{
 
 	@Autowired
@@ -50,20 +50,20 @@ public class ReaderController  extends BaseController{
 	 * @param authorName
 	 * @return list of books
 	 */
-	@GetMapping("/books/search")
+	@GetMapping("reader/books/search")
 	public List<Book> searchBooks(@RequestParam String tittle, @RequestParam BookCategory category,
 			@RequestParam Double price, @RequestParam String publisher, @RequestParam String authorName) {
 		List<Book> books = readerService.searchBooks(tittle, category, price, publisher, authorName);
 		return books;
 	}
 	
-	@GetMapping("/books/ssearch")
+	@GetMapping("reader/books/ssearch")
 	public List<Book> simpleSearchBooks(@RequestParam String searchParam) {
 		log.debug(searchParam);
 		List<Book> books = readerService.simpleSearchBooks(searchParam);
 		return books;
 	}
-	@GetMapping("/{userId}/books/{bookId}")
+	@GetMapping("{userId}/books/{bookId}")
 	public ResponseEntity<Book> getBookById( @PathVariable Long userId, @PathVariable Integer bookId) {
 		log.debug("Entering into getBookById");
 		Book book = readerService.getBookById( userId,bookId);
@@ -78,7 +78,7 @@ public class ReaderController  extends BaseController{
 	 * @param readerId
 	 * @return book
 	 */
-	@GetMapping("/{userId}/books/buy")
+	@GetMapping("reader/{userId}/books/buy")
 	public Set<Book> getPurchasedBooks(@PathVariable Long userId) {
 		return readerService.getPurchasedBooks(userId);
 	}
@@ -106,7 +106,7 @@ public class ReaderController  extends BaseController{
 	 * @param bookId
 	 * @return ResponseEntity
 	 */
-	@PostMapping("/{userId}/books/buy/")
+	@PostMapping("reader/{userId}/books/buy/")
 	public ResponseEntity<?> purchaseBook(@PathVariable Long userId,@RequestBody PaymentRequest paymentRequest) {
 		log.debug("Entering into purchaseBook");
 		Payment payment=readerService.purchaseBook(userId,paymentRequest);

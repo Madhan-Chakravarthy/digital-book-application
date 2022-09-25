@@ -10,10 +10,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +34,11 @@ import com.digitalbooks.service.impl.UserDetailsImpl;
 import com.digitalbooks.service.impl.UserServiceImpl;
 
 import lombok.extern.slf4j.Slf4j;
-
+/**
+ * 
+ * @author madhan AuthenticationController contains the end point for Login and sign up
+ *
+ */
 @RestController
 @RequestMapping("/auth")
 @Slf4j
@@ -54,7 +56,12 @@ public class AuthenticationController {
 	
 	@Autowired
 	AuthorServiceImpl authorService;
-
+	/**
+	 * End point for user Login
+	 * @param login
+	 * @return ResponseEntity<LoginResponse> 
+	 * @throws Exception
+	 */
 	@PostMapping("/login")
 	public ResponseEntity<LoginResponse>  authenticateUser(@Valid @RequestBody LoginRequest login) throws Exception {
 
@@ -77,7 +84,11 @@ public class AuthenticationController {
 		return new ResponseEntity<LoginResponse>(loginResponse,HttpStatus.OK);
 
 	}
-
+	/**
+	 * End point for Sign up
+	 * @param signUp
+	 * @return  ResponseEntity<?>
+	 */
 	@PostMapping("/signup")
 	public ResponseEntity<?> signup(@RequestBody SignupRequest signUp) {
 		log.debug(signUp.toString());

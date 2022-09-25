@@ -30,7 +30,7 @@ class RoleTest {
 		role1.setName(ERole.ROLE_READER);
 
 		assertEquals(role.equals(role1), false);
-		
+		assertNotEquals(role.hashCode(), role1.hashCode());
 	}
 
 }

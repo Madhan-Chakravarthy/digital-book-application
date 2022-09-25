@@ -1,14 +1,11 @@
 package com.digitalbooks.mockData;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Author;
@@ -17,8 +14,6 @@ import com.digitalbooks.entity.ERole;
 import com.digitalbooks.entity.Payment;
 import com.digitalbooks.entity.Role;
 import com.digitalbooks.entity.User;
-import com.digitalbooks.service.impl.UserServiceImpl;
-import com.mysql.cj.x.protobuf.MysqlxCrud.Collection;
 
 public class MockData {
 

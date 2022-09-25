@@ -2,8 +2,6 @@ package com.digitalbooks.entity;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +25,7 @@ class ResponseMessageTest {
 	
 		assertEquals(responseMessage.equals(responseMessage2), false);
 		
+		assertNotEquals(responseMessage.hashCode(), responseMessage2.hashCode());
 	}
 
 }

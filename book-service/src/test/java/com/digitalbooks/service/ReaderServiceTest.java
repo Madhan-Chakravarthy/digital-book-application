@@ -3,6 +3,7 @@ package com.digitalbooks.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -19,7 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.digitalbooks.common.BookCategory;
 import com.digitalbooks.entity.Book;
-import com.digitalbooks.entity.Payment;
 import com.digitalbooks.entity.PaymentRequest;
 import com.digitalbooks.mockData.MockData;
 import com.digitalbooks.repository.BookRepository;
@@ -60,6 +60,12 @@ public class ReaderServiceTest {
 		when(bookRepository.findByTittleIgnoreCaseOrCategoryOrPriceOrPublisherIgnoreCaseOrAuthorNameIgnoreCase("tittle",
 				BookCategory.COMIC, 100.33, "The Hid", "Author")).thenReturn(books);
 		assertEquals(readerService.searchBooks("tittle", BookCategory.COMIC, 100.33, "The Hid", "Author"), books);
+		
+		List<Book> books2= new ArrayList<Book>();
+		when(bookRepository.findByTittleIgnoreCaseOrCategoryOrPriceOrPublisherIgnoreCaseOrAuthorNameIgnoreCase("tittle",
+				BookCategory.COMIC, 100.33, "The Hid", "Authors")).thenReturn(books2);
+		assertEquals(readerService.searchBooks("tittle", BookCategory.COMIC, 100.33, "The Hid", "Authors"), books2);
+		
 	}
 
 	@Test
@@ -84,7 +90,6 @@ public class ReaderServiceTest {
 		when(bookRepository.findById(1)).thenReturn(Optional.of(mockdata.books.get(0)));
 		assertEquals(readerService.getBookById((long)1, 1), mockdata.books.get(0));
 		when(paymentRepository.findByUserId((long) 2)).thenReturn(Collections.EMPTY_LIST);
-		//mockdata.books.get(0).setPurchased(null);
 		assertEquals(readerService.getBookById((long)2, 1), mockdata.books.get(0));
 	}
 

@@ -12,7 +12,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.digitalbooks.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class UserDetailsImpl  implements UserDetails{
+/**
+ * @author madhan UserDetailsImpl implements the UserDetails from Spring
+ *         Security to handle user details
+ *
+ */
+public class UserDetailsImpl implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,15 +43,9 @@ public class UserDetailsImpl  implements UserDetails{
 
 	public static UserDetailsImpl build(User user) {
 		List<GrantedAuthority> authorities = user.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
-				.collect(Collectors.toList());
+				.map(role -> new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
 
-		return new UserDetailsImpl(
-				user.getId(), 
-				user.getUsername(), 
-				user.getEmail(),
-				user.getPassword(), 
-				authorities);
+		return new UserDetailsImpl(user.getId(), user.getUsername(), user.getEmail(), user.getPassword(), authorities);
 	}
 
 	@Override

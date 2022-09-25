@@ -2,8 +2,6 @@ package com.digitalbooks.service.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,24 +54,17 @@ public class AuthorServiceImpl  implements AuthorService{
 		Author author = userRepository.findById(userId).get().getAuthor();
 		return bookrepository.findByAuthorId(author.getId());
 	}
-
+	/**
+	 * service method to save the author
+	 */
 	public Author saveAuthor(Author author) {
 		return authorRepository.save(author);
 		
 	}
 
-	/*
-	 * public Book getBookById(Long userId, Integer bookId) { Author author =
-	 * userRepository.findById(userId).get().getAuthor(); List<Book>
-	 * books=bookrepository.findByAuthorId(author.getId()).stream()
-	 * .filter(book->book.getId()==bookId).collect(Collectors.toList());
-	 * 
-	 * if(!books.isEmpty()) { books.get(0).setAuthorsBook(true); return
-	 * books.get(0); }
-	 * 
-	 * return null; }
+	/**
+	 * business logic to edit author's book
 	 */
-
 	public Book editBook(Long userId, Integer bookId, Book book) {
 		Optional<Book> originalBook =bookrepository.findById(bookId);
 		if(originalBook.isPresent()) {
