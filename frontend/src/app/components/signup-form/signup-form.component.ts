@@ -4,40 +4,45 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-signup-form',
   templateUrl: './signup-form.component.html',
-  styleUrls: ['./signup-form.component.scss']
+  styleUrls: ['./signup-form.component.scss'],
 })
 export class SignupFormComponent implements OnInit {
-
-  constructor(public auth:AuthService) { }
- signupdata:any;
- roleList:string[]=[];
- status:string='form';
- error:string='';
-  ngOnInit(): void {
-  }
-  signup(userData:any){
-    this.roleList=(userData.author && userData.reader) ? ["author","reader"]:userData.author?["author"]:userData.reader?["reader"]:[];
+  constructor(public auth: AuthService) {}
+  signupdata: any;
+  roleList: string[] = [];
+  status: string = 'form';
+  error: string = '';
+  ngOnInit(): void {}
+  signup(userData: any) {
+    this.roleList =
+      userData.author && userData.reader
+        ? ['author', 'reader']
+        : userData.author
+        ? ['author']
+        : userData.reader
+        ? ['reader']
+        : [];
     console.log(userData);
-    this.signupdata={
-      name:userData.name,
-      email:userData.email,
-      username:userData.username,
-      password:userData.password,
-      aboutAuthor:userData.aboutAuthor,
-      role: this.roleList
-    }
+    this.signupdata = {
+      name: userData.name,
+      email: userData.email,
+      username: userData.username,
+      password: userData.password,
+      aboutAuthor: userData.aboutAuthor,
+      role: this.roleList,
+    };
 
     console.log(this.signupdata);
     const observable = this.auth.signup(this.signupdata);
     observable.subscribe(
-      (response) => {console.log('hiii');
-      this.status='success';
+      (response) => {
+        console.log('hiii');
+        this.status = 'success';
       },
       (error) => {
-        this.error=error.error;
+        this.error = error.error;
         console.log(error);
-        }
+      }
     );
   }
-
 }

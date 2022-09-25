@@ -1,8 +1,8 @@
 <div class="container test-center mt-3" style="max-width: 700px;">
   <div class="card shadow p-5">
-    <form #searchForm="ngForm" (ngSubmit)="f.form.valid && viewSearchBookList(searchForm.value)"   #f="ngForm">
+    <form #searchForm="ngForm" (ngSubmit)="f.form.valid && viewSearchBookList(searchForm.value)" #f="ngForm">
       <div class="text-center ">
-        <h1>Search Book</h1>
+        <h1><i class="fa fa-search" aria-hidden="true"></i> Search Book</h1>
       </div>
       <div class="row my-3">
         <label for="tittle" class="col-sm-2 col-form-label">Tittle</label>
@@ -31,7 +31,7 @@
       <div class="row mb-3">
         <label for="category" class="col-sm-2 col-form-label">Category</label>
         <div class="col-sm-10">
-          <select name="category" id="category" class="form-control" ngModel  #category="ngModel" required>
+          <select name="category" id="category" class="form-control" ngModel #category="ngModel" required>
             <option selected="COMIC" value="COMIC">COMIC</option>
             <option value="ADVENTURE">ADVENTURE</option>
             <option value="ROMANTIC">ROMANTIC</option>

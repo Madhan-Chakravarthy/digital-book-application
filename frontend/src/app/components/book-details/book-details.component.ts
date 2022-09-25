@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 import { Book } from 'src/entity/book';
 
 @Component({
@@ -10,10 +11,16 @@ import { Book } from 'src/entity/book';
 })
 export class BookDetailsComponent implements OnInit {
 
-  constructor(private apiService:ApiService,private route:ActivatedRoute,private router: Router) { }
+  constructor(private apiService:ApiService,private route:ActivatedRoute,private router: Router,private tokenStorage:TokenStorageService) { }
   book:any;
   key:string='';
+  isLoggedIn:boolean=false;
   ngOnInit(): void {
+    if (this.tokenStorage.getToken()) {
+      this.isLoggedIn = true;
+    }else{
+      this.noUserFound();
+    }
     this.route.queryParams.subscribe((params)=>{
        this.key=params['key'];
     });
@@ -41,5 +48,8 @@ export class BookDetailsComponent implements OnInit {
         this.status='fail';
         }
     );
+  }
+  noUserFound(){
+    this.router.navigate(['login']);
   }
 }

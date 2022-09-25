@@ -7,6 +7,8 @@ export interface Book {
   active: Boolean;
   content: String;
   purchased:boolean;
+  pdf:any;
+  image:any;
   author:any;
 }
 export interface SearchBook {

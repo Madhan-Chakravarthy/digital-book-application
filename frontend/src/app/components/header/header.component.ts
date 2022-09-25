@@ -5,18 +5,20 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-
-  constructor(private route: Router,private tokenStorageService :TokenStorageService) { }
- searchParam:string='';
- currentUser: any;
- private roles: string[] = [];
- isLoggedIn = false;
- showReaderBoard = false;
- showAuthorBoard = false;
- username?: string;
+  constructor(
+    private route: Router,
+    private tokenStorageService: TokenStorageService
+  ) {}
+  searchParam: string = '';
+  currentUser: any;
+  private roles: string[] = [];
+  isLoggedIn = false;
+  showReaderBoard = false;
+  showAuthorBoard = false;
+  username?: string;
   ngOnInit(): void {
     this.currentUser = this.tokenStorageService.getUser();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -31,28 +33,33 @@ export class HeaderComponent implements OnInit {
       this.username = user.username;
     }
   }
-  authorsBook(){
-    this.route.navigate(['books'],{queryParams:{
-      key:'author'
-    }})
+  authorsBook() {
+    this.route.navigate(['books'], {
+      queryParams: {
+        key: 'author',
+      },
+    });
   }
-  readersBook(){
-    this.route.navigate(['books'],{queryParams:{
-      key:'reader'
-    }})
+  readersBook() {
+    this.route.navigate(['books'], {
+      queryParams: {
+        key: 'reader',
+      },
+    });
   }
-  simpleSearchBook(SearchBook:any){
-    this.searchParam=SearchBook.search
+  simpleSearchBook(SearchBook: any) {
+    this.searchParam = SearchBook.search;
     console.log(this.searchParam + 'hiii');
-    this.route.navigate(['books'],{queryParams:{
-      searchParam: this.searchParam,
-      key:'simple-search'
-    }})
+    this.route.navigate(['books'], {
+      queryParams: {
+        searchParam: this.searchParam,
+        key: 'simple-search',
+      },
+    });
   }
-  logout(){
+  logout() {
     this.tokenStorageService.signOut();
     this.route.navigate(['login']);
     this.ngOnInit();
   }
-
 }

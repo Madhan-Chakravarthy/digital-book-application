@@ -1,22 +1,34 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand"  routerLink="/">DIGITAL BOOKS</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <a class="navbar-brand" routerLink="/"><img [src]="'assets/images/digitalbookIcon.PNG'"
+        style="width: 40px;height: 50px;"> DIGITAL BOOKS</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse justify-content-end " id="navbarNavAltMarkup">
-      <div  class="navbar-nav ml-auto">
-        <form *ngIf="showReaderBoard" class="d-flex" #searchParam="ngForm" (ngSubmit)="searchParam.valid &&simpleSearchBook(searchParam.value)">
-          <input class="form-control me-2"   type="search" ngModel name="search" required placeholder="Search" aria-label="Search">
-          <button *ngIf="searchParam.value.search!==''" class="btn btn-outline-success" >Search</button>
+      <div class="navbar-nav ml-auto">
+        <form *ngIf="showReaderBoard" class="d-flex" #searchParam="ngForm"
+          (ngSubmit)="searchParam.valid &&simpleSearchBook(searchParam.value)">
+          <input class="form-control me-2" type="search" ngModel name="search" required placeholder="Search"
+            aria-label="Search">
+          <button *ngIf="searchParam.value.search!==''" class="btn btn-outline-success"><i class="fa fa-search"
+              aria-hidden="true">Search</i></button>
         </form>
-        <a *ngIf="showAuthorBoard && isLoggedIn" class="nav-link" aria-current="page" routerLink="/savebook" >Add my Book</a>
-        <a *ngIf="showReaderBoard && isLoggedIn" class="nav-link" routerLink="/searchbook" >Deep Search</a>
-        <a *ngIf="showReaderBoard && isLoggedIn" class="nav-link" [routerLink]="[]" (click)="readersBook()"  >My Books</a>
-        <a *ngIf="showAuthorBoard && isLoggedIn" class="nav-link" [routerLink]="[]" (click)="authorsBook()"  >Author's book</a>
-        <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login"  >Login</a>
-        <a *ngIf="!isLoggedIn"  class="nav-link" routerLink="/signup"  >Signup</a>
-        <a *ngIf="isLoggedIn" class="nav-link" [routerLink]="[]" (click)="logout()"  >Logout</a>
+        <a *ngIf="showAuthorBoard && isLoggedIn" class="nav-link" aria-current="page" routerLink="/savebook"><i
+            class="fa fa-book" aria-hidden="true"></i>Add my Book</a>
+        <a *ngIf="showReaderBoard && isLoggedIn" class="nav-link" routerLink="/searchbook"><i class="fa fa-search"
+            aria-hidden="true"></i> Deep Search</a>
+        <a *ngIf="showReaderBoard && isLoggedIn" class="nav-link" [routerLink]="[]" (click)="readersBook()"><i
+            class="fa fa-book" aria-hidden="true"></i> My Books</a>
+        <a *ngIf="showAuthorBoard && isLoggedIn" class="nav-link" [routerLink]="[]" (click)="authorsBook()"><i
+            class="fa fa-book" aria-hidden="true"></i>Author's book</a>
+        <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/login"><i class="fa fa-sign-in" aria-hidden="true"></i>
+          Login</a>
+        <a *ngIf="!isLoggedIn" class="nav-link" routerLink="/signup"><i class="fa fa-user-plus" aria-hidden="true"></i>
+          Signup</a>
+        <a *ngIf="isLoggedIn" class="nav-link" [routerLink]="[]" (click)="logout()"><i class="fa fa-sign-out"
+            aria-hidden="true"></i>Logout</a>
         <!-- <a class="nav-link disabled" tabindex="-1" aria-disabled="true">Disabled</a> -->
       </div>
     </div>

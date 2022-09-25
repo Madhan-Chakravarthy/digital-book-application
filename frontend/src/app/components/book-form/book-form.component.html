@@ -1,15 +1,15 @@
 <div class="container test-center my-3" style="max-width: 700px;">
   <div class="card shadow p-5">
-    <form #bookForm="ngForm" (ngSubmit)="bookForm.valid && saveBook(bookForm.value)" *ngIf="status ==='form'" #f="ngForm"
-      novalidate>
+    <form #bookForm="ngForm" (ngSubmit)="bookForm.valid && saveBook(bookForm.value)" *ngIf="status ==='form'"
+      #f="ngForm" novalidate>
       <div class="text-center ">
-        <h1>Create Book</h1>
+        <h1><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {{bookId===0?'CreateBook':'Edit Book'}}</h1>
       </div>
       <div class="row my-3">
         <label for="tittle" class="col-sm-2 col-form-label">Tittle</label>
         <div class="col-sm-10">
-          <input type="text"  [(ngModel)]="book.tittle"   class="form-control" required ngModel #tittle="ngModel" id="tittle" name="tittle"
-            placeholder="tittle">
+          <input type="text" [(ngModel)]="book.tittle" class="form-control" required pattern="^(?!\s*$)[\s\S]+$" ngModel
+            #tittle="ngModel" id="tittle" name="tittle" placeholder="tittle">
         </div>
       </div>
       <div class="alert alert-danger mb-3" role="alert" *ngIf="tittle.errors && f.submitted">
@@ -18,8 +18,8 @@
       <div class="row mb-3">
         <label for="price" class="col-sm-2 col-form-label">Price</label>
         <div class="col-sm-10">
-          <input type="number" [(ngModel)]="book.price"   class="form-control" ngModel #price="ngModel" required id="price" name="price"
-            placeholder="price">
+          <input type="number" [(ngModel)]="book.price" class="form-control" ngModel #price="ngModel" required
+            id="price" name="price" placeholder="price">
         </div>
       </div>
       <div class="alert alert-danger mb-3" role="alert" *ngIf="price.errors && f.submitted">
@@ -28,8 +28,8 @@
       <div class="row mb-3">
         <label for="publisher" class="col-sm-2 col-form-label">Publisher</label>
         <div class="col-sm-10">
-          <input type="text" [(ngModel)]="book.publisher"  class="form-control" ngModel id="publisher" #publisher="ngModel" required name="publisher"
-            placeholder="publisher">
+          <input type="text" [(ngModel)]="book.publisher" class="form-control" ngModel id="publisher"
+            pattern="^(?!\s*$)[\s\S]+$" #publisher="ngModel" required name="publisher" placeholder="publisher">
         </div>
       </div>
       <div class="alert alert-danger mb-3" role="alert" *ngIf="publisher.errors && f.submitted">
@@ -38,17 +38,18 @@
       <div class="row mb-3">
         <label for="publishDate" class="col-sm-2 col-form-label">Date</label>
         <div class="col-sm-10">
-          <input type="date" [(ngModel)]="book.publishDate"  class="form-control" ngModel #publishDate="ngModel" required id="publishDate"
-            name="publishDate">
+          <input type="date" [(ngModel)]="book.publishDate" class="form-control" ngModel #publishDate="ngModel" required
+            id="publishDate" name="publishDate">
         </div>
       </div>
       <div class="alert alert-danger mb-3" role="alert" *ngIf="publishDate.errors && f.submitted">
         publish date is required!
       </div>
       <div class="row mb-3">
-        <label for="category"  class="col-sm-2 col-form-label">Category</label>
+        <label for="category" class="col-sm-2 col-form-label">Category</label>
         <div class="col-sm-10">
-          <select [(ngModel)]="book.category" name="category" id="category" class="form-control" ngModel #category="ngModel" required>
+          <select [(ngModel)]="book.category" name="category" id="category" class="form-control" ngModel
+            #category="ngModel" required>
             <option selected="COMIC" value="COMIC">COMIC</option>
             <option value="ADVENTURE">ADVENTURE</option>
             <option value="ROMANTIC">ROMANTIC</option>
@@ -61,8 +62,8 @@
       <div class="row mb-3">
         <label for="active" class="col-sm-2 col-form-label">Active</label>
         <div class="col-sm-10">
-         yes :  <input type="radio"  ngModel name="active" [value]="true" #active="ngModel" required />
-          No :<input type="radio"  ngModel name="active" [value]="false" #active="ngModel" required />
+          yes : <input type="radio" ngModel name="active" [value]="true" #active="ngModel" required />
+          No :<input type="radio" ngModel name="active" [value]="false" #active="ngModel" required />
         </div>
       </div>
       <div class="alert alert-danger mb-3" role="alert" *ngIf="active.errors && f.submitted">
@@ -71,7 +72,8 @@
       <div class="row mb-3">
         <label for="content" class="col-sm-2 col-form-label">Content</label>
         <div class="col-sm-10">
-          <input type="text" [(ngModel)]="book.content"  class="form-control"  ngModel id="content" name="content" placeholder="content">
+          <input type="text" [(ngModel)]="book.content" class="form-control" ngModel id="content" name="content"
+            placeholder="content">
         </div>
       </div>
       <div class="text-center mt-5">

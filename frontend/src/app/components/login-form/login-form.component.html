@@ -1,11 +1,12 @@
 <div class="container-fluid my-5 " style="max-width: 500px;">
   <div class="card shadow p-5">
-    <form #loginForm="ngForm" (ngSubmit)="f.form.valid && onSubmit(loginForm.value)" #f="ngForm" *ngIf="errorMessage===''">
-      <h2 class="text-center">Login</h2>
+    <form #loginForm="ngForm" (ngSubmit)="f.form.valid && onSubmit(loginForm.value)" #f="ngForm"
+      *ngIf="errorMessage===''">
+      <h2 class="text-center"><i class="fa fa-user" aria-hidden="true"></i> Login</h2>
       <div class="form-group mt-3">
         <label for="user_name">User Name:</label>
-        <input type="text" class="form-control" ngModel id="username" name="username" ngModel placeholder="User Name"
-          #username="ngModel" required>
+        <input type="text" class="form-control" ngModel id="username" name="username" pattern="^(?!\s*$)[\s\S]+$"
+          ngModel placeholder="User Name" #username="ngModel" required>
       </div>
       <div class="alert alert-danger mb-3" role="alert" *ngIf="username.errors && f.submitted">
         user name is required!
@@ -15,7 +16,8 @@
         <input type="password" class="form-control" ngModel id="password" ngModel name="password" placeholder="password"
           #password="ngModel" required minlength="6">
       </div>
-      <div class="alert alert-danger mb-3" role="alert" *ngIf="password.errors && f.submitted">
+      <div class="alert alert-danger mb-3" role="alert" pattern="^(?!\s*$)[\s\S]+$"
+        *ngIf="password.errors && f.submitted">
         password length should be atleast 6 character
       </div>
       <div class="text-center mt-4">
@@ -23,11 +25,11 @@
       </div>
       <div class="text-center mt-4">
         <small> Don't have an account? </small>
-        <a class=" text-center"  routerLink="/signup"><small>Sign Up</small></a>
+        <a class=" text-center" routerLink="/signup"><small>Sign Up</small></a>
       </div>
     </form>
     <div *ngIf="errorMessage!==''" class="text-center">
-        {{errorMessage}}
+      {{errorMessage}}
     </div>
   </div>
 </div>

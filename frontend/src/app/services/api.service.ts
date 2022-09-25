@@ -3,55 +3,68 @@ import { Injectable } from '@angular/core';
 import { Book, SearchBook } from 'src/entity/book';
 import { TokenStorageService } from './token-storage.service';
 
-const API_URL='http://localhost:8080/';
+const API_URL = 'http://localhost:8080/';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   editBook(bookId: number, book: Book) {
-    return this.client.put(API_URL +'author/'+this.userId+'/book/' + bookId,book);
+    return this.client.put(
+      API_URL + 'author/' + this.userId + '/book/' + bookId,
+      book
+    );
   }
-  userId:number=1;
-  constructor(private client:HttpClient, private tokenStorageService: TokenStorageService) { this.userId=tokenStorageService.getUser().id }
+  userId: number = 1;
+  constructor(
+    private client: HttpClient,
+    private tokenStorageService: TokenStorageService
+  ) {
+    this.userId = tokenStorageService.getUser().id;
+  }
   SimplesearchBook(searchParam: string) {
     let params = new HttpParams({
-      fromObject:{
-       "searchParam":searchParam
-      }
-     });
-     return this.client.get(API_URL + 'reader/books/ssearch',{params:params});
+      fromObject: {
+        searchParam: searchParam,
+      },
+    });
+    return this.client.get(API_URL + 'reader/books/ssearch', {
+      params: params,
+    });
   }
   raedersBook() {
-    return this.client.get(API_URL+'reader/'+ this.userId+'/books/buy/');
+    return this.client.get(API_URL + 'reader/' + this.userId + '/books/buy/');
   }
   puchaseBook(bookIds: number[]) {
-   const books={
-    bookIds
-   }
-   console.log(books);
-    return this.client.post(API_URL+'reader/'+ this.userId+'/books/buy/',books)
+    const books = {
+      bookIds,
+    };
+    console.log(books);
+    return this.client.post(
+      API_URL + 'reader/' + this.userId + '/books/buy/',
+      books
+    );
   }
   authorsBook() {
-    return this.client.get(API_URL+'author/'+this.userId+'/book/');
+    return this.client.get(API_URL + 'author/' + this.userId + '/book/');
   }
 
-  saveBook(book:Book){
-    return this.client.post(API_URL +'author/'+this.userId+'/book',book);
-   }
-   getBookById(id:number){
-    return this.client.get(API_URL+'reader/'+ this.userId + '/books/'+id);
-   }
-   searchBook(searchDetails:any){
+  saveBook(book: Book) {
+    return this.client.post(API_URL + 'author/' + this.userId + '/book', book);
+  }
+  getBookById(id: number) {
+    return this.client.get(API_URL + this.userId + '/books/' + id);
+  }
+  searchBook(searchDetails: any) {
     let params = new HttpParams({
-     fromObject:{
-      "tittle":searchDetails.tittle,
-      "price":searchDetails.price,
-      "publisher":searchDetails.publisher,
-      "category":searchDetails.category,
-      "authorName":searchDetails.authorName
-     }
+      fromObject: {
+        tittle: searchDetails.tittle,
+        price: searchDetails.price,
+        publisher: searchDetails.publisher,
+        category: searchDetails.category,
+        authorName: searchDetails.authorName,
+      },
     });
-    return this.client.get(API_URL + 'reader/books/search',{params:params});
-   }
+    return this.client.get(API_URL + 'reader/books/search', { params: params });
+  }
 }

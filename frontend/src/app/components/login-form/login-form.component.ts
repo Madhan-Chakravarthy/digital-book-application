@@ -7,14 +7,17 @@ import { user } from 'src/entity/user';
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
-  styleUrls: ['./login-form.component.scss']
+  styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent implements OnInit {
-
-  constructor(private authService:AuthService, private tokenStorage: TokenStorageService,private route: Router) { }
+  constructor(
+    private authService: AuthService,
+    private tokenStorage: TokenStorageService,
+    private route: Router
+  ) {}
   form: any = {
     username: null,
-    password: null
+    password: null,
   };
   isLoggedIn = false;
   isLoginFailed = false;
@@ -28,10 +31,9 @@ export class LoginFormComponent implements OnInit {
     }
   }
 
-  onSubmit(user:user): void {
-
+  onSubmit(user: user): void {
     this.authService.login(user.username, user.password).subscribe(
-      data => {
+      (data) => {
         this.tokenStorage.saveToken(data.token);
         this.tokenStorage.saveUser(data);
         this.isLoginFailed = false;
@@ -39,18 +41,17 @@ export class LoginFormComponent implements OnInit {
         this.roles = this.tokenStorage.getUser().roles;
         this.reloadPage();
       },
-      err => {
+      (err) => {
         console.log(err);
-       this.errorMessage='Authontication Failed';
+        this.errorMessage = 'Authontication Failed';
         this.isLoginFailed = true;
       }
     );
   }
 
   reloadPage(): void {
-   this.route.navigate(['/']).then(() => {
-    window.location.reload();
-  });
+    this.route.navigate(['/']).then(() => {
+      window.location.reload();
+    });
   }
-
 }
